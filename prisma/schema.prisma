@@ -1,0 +1,116 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  password      String
+  name          String
+  role          String         @default("staff") // "admin" | "staff"
+  avatar        String         @default("")
+  createdAt     DateTime       @default(now())
+  notifications Notification[]
+}
+
+model Farmer {
+  id          String       @id @default(cuid())
+  displayId   String       @unique // e.g. "F001"
+  name        String
+  village     String
+  phone       String
+  cattle      Int          @default(1)
+  status      String       @default("active") // "active" | "inactive"
+  joinDate    String
+  balance     Float        @default(0)
+  collections Collection[]
+  payments    Payment[]
+  receipts    Receipt[]
+}
+
+model Customer {
+  id        String @id @default(cuid())
+  displayId String @unique // e.g. "C001"
+  name      String
+  type      String @default("retail") // "retail" | "bulk" | "subscription"
+  phone     String
+  address   String @default("")
+  dailyQty  Float  @default(0)
+  status    String @default("active") // "active" | "inactive"
+  balance   Float  @default(0)
+}
+
+model Collection {
+  id         String @id @default(cuid())
+  displayId  String @unique // e.g. "MC0001"
+  farmer     Farmer @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+  farmerId   String
+  farmerName String
+  date       String
+  shift      String // "morning" | "evening"
+  qty        Float
+  fat        Float
+  water      Float  @default(0)
+  snf        Float?
+  rate       Float
+  amount     Float
+  status     String @default("accepted") // "accepted" | "pending"
+}
+
+model Payment {
+  id         String   @id @default(cuid())
+  displayId  String   @unique // e.g. "P001"
+  farmer     Farmer   @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+  farmerId   String
+  farmerName String
+  amount     Float
+  date       String
+  method     String // "cash" | "bank" | "upi" | "cheque"
+  status     String   @default("pending") // "paid" | "pending"
+  note       String   @default("")
+  receipts   Receipt[]
+}
+
+model Receipt {
+  id         String  @id @default(cuid())
+  displayId  String  @unique // e.g. "R001"
+  payment    Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  paymentId  String
+  farmer     Farmer  @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+  farmerId   String
+  farmerName String
+  amount     Float
+  date       String
+  paidDate   String
+  method     String // "cash" | "bank" | "upi" | "cheque"
+  note       String  @default("")
+}
+
+model Tank {
+  id          String @id @default(cuid())
+  displayId   String @unique // e.g. "T001"
+  name        String
+  capacity    Float
+  current     Float  @default(0)
+  temp        Float  @default(4.0)
+  status      String @default("operational") // "operational" | "maintenance"
+  lastCleaned String
+}
+
+model Notification {
+  id     String  @id @default(cuid())
+  type   String // "payment" | "collection" | "maintenance"
+  msg    String
+  time   String
+  read   Boolean @default(false)
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+}
