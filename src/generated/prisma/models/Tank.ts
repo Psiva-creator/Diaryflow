@@ -1128,6 +1128,7 @@ export type TankCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * The data used to create many Tanks.
    */
   data: Prisma.TankCreateManyInput | Prisma.TankCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1146,6 +1147,7 @@ export type TankCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    * The data used to create many Tanks.
    */
   data: Prisma.TankCreateManyInput | Prisma.TankCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**

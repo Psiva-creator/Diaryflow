@@ -39,6 +39,7 @@ export function AppProvider({ children, initialData }: AppProviderProps) {
   // Theme persistence
   useEffect(() => {
     const saved = localStorage.getItem('dairy-theme') || 'light'
+    // eslint-disable-next-line
     setTheme(saved)
     document.documentElement.classList.toggle('dark', saved === 'dark')
   }, [])

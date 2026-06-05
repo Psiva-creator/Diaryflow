@@ -654,6 +654,7 @@ export type CollectionCreateOrConnectWithoutFarmerInput = {
 
 export type CollectionCreateManyFarmerInputEnvelope = {
   data: Prisma.CollectionCreateManyFarmerInput | Prisma.CollectionCreateManyFarmerInput[]
+  skipDuplicates?: boolean
 }
 
 export type CollectionUpsertWithWhereUniqueWithoutFarmerInput = {
@@ -1521,6 +1522,7 @@ export type CollectionCreateManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * The data used to create many Collections.
    */
   data: Prisma.CollectionCreateManyInput | Prisma.CollectionCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1539,6 +1541,7 @@ export type CollectionCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Exte
    * The data used to create many Collections.
    */
   data: Prisma.CollectionCreateManyInput | Prisma.CollectionCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

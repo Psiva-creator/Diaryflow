@@ -1540,6 +1540,7 @@ export type FarmerCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * The data used to create many Farmers.
    */
   data: Prisma.FarmerCreateManyInput | Prisma.FarmerCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1558,6 +1559,7 @@ export type FarmerCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    * The data used to create many Farmers.
    */
   data: Prisma.FarmerCreateManyInput | Prisma.FarmerCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**

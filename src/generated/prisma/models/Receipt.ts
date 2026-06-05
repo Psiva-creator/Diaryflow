@@ -588,6 +588,7 @@ export type ReceiptCreateOrConnectWithoutFarmerInput = {
 
 export type ReceiptCreateManyFarmerInputEnvelope = {
   data: Prisma.ReceiptCreateManyFarmerInput | Prisma.ReceiptCreateManyFarmerInput[]
+  skipDuplicates?: boolean
 }
 
 export type ReceiptUpsertWithWhereUniqueWithoutFarmerInput = {
@@ -653,6 +654,7 @@ export type ReceiptCreateOrConnectWithoutPaymentInput = {
 
 export type ReceiptCreateManyPaymentInputEnvelope = {
   data: Prisma.ReceiptCreateManyPaymentInput | Prisma.ReceiptCreateManyPaymentInput[]
+  skipDuplicates?: boolean
 }
 
 export type ReceiptUpsertWithWhereUniqueWithoutPaymentInput = {
@@ -1527,6 +1529,7 @@ export type ReceiptCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * The data used to create many Receipts.
    */
   data: Prisma.ReceiptCreateManyInput | Prisma.ReceiptCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1545,6 +1548,7 @@ export type ReceiptCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    * The data used to create many Receipts.
    */
   data: Prisma.ReceiptCreateManyInput | Prisma.ReceiptCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */
