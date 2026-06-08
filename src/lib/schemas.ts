@@ -7,6 +7,8 @@ export const farmerSchema = z.object({
   village: z.string().min(2, 'Village is required'),
   phone: z.string().regex(/^\d{10}$/, 'Phone must be a 10-digit number'),
   cattle: z.number().int().min(1, 'Must have at least 1 cattle').max(1000, 'Cattle count cannot exceed 1,000'),
+  customPricing: z.boolean().optional(),
+  includesSnf: z.boolean().optional(),
 })
 
 export type FarmerSchemaType = z.infer<typeof farmerSchema>

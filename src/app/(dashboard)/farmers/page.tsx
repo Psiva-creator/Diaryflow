@@ -8,7 +8,7 @@ import Modal from '@/components/ui/Modal'
 import { Users, Plus, Edit2, Trash2, Phone, MapPin, User, Eye, CheckCircle, XCircle, BookOpen, X, ChevronDown, ChevronUp, Milk, IndianRupee, Calendar } from 'lucide-react'
 import toast from 'react-hot-toast'
 
-const EMPTY_ROW = () => ({ name: '', village: '', phone: '', cattle: 1, _key: Date.now() + Math.random() })
+const EMPTY_ROW = () => ({ name: '', village: '', phone: '', cattle: 1, customPricing: false, includesSnf: false, _key: Date.now() + Math.random() })
 
 interface FarmerFormProps {
   onSave: () => void
@@ -38,6 +38,18 @@ const FarmerForm = ({ onSave, onCancel, label, form, setForm }: FarmerFormProps)
         <input id="farmer-cattle" type="number" min={1} value={form.cattle} onChange={e => setForm({ ...form, cattle: +e.target.value })} className="input-field" />
       </div>
     </div>
+    <div className="flex flex-col gap-3 mt-4 border-t border-[var(--color-border)] pt-4">
+      <label className="flex items-center gap-2 text-sm font-medium text-[var(--color-text)] cursor-pointer">
+        <input type="checkbox" checked={form.customPricing || false} onChange={e => setForm({ ...form, customPricing: e.target.checked })} className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+        Enable Custom Pricing Rule
+      </label>
+      {form.customPricing && (
+        <label className="flex items-center gap-2 text-sm font-medium text-[var(--color-text)] cursor-pointer ml-6">
+          <input type="checkbox" checked={form.includesSnf || false} onChange={e => setForm({ ...form, includesSnf: e.target.checked })} className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+          Includes Respective SNF
+        </label>
+      )}
+    </div>
     <div className="flex gap-3 pt-2">
       <button onClick={onSave} className="btn-primary flex-1 justify-center">{label}</button>
       <button onClick={onCancel} className="btn-secondary flex-1 justify-center">Cancel</button>
@@ -55,7 +67,7 @@ export default function FarmersPage() {
   const [addOpen, setAddOpen] = useState(false)
   const [editFarmer, setEditFarmer] = useState<Farmer | null>(null)
   const [viewFarmer, setViewFarmer] = useState<Farmer | null>(null)
-  const [form, setForm] = useState({ name: '', village: '', phone: '', cattle: 1 })
+  const [form, setForm] = useState({ name: '', village: '', phone: '', cattle: 1, customPricing: false, includesSnf: false })
 
   // Book entry state
   const [bookOpen, setBookOpen] = useState(false)
@@ -69,7 +81,7 @@ export default function FarmersPage() {
     return matchSearch && matchStatus
   })
 
-  const resetForm = () => setForm({ name: '', village: '', phone: '', cattle: 1 })
+  const resetForm = () => setForm({ name: '', village: '', phone: '', cattle: 1, customPricing: false, includesSnf: false })
 
   const handleAdd = async () => {
     if (!form.name || !form.village || !form.phone) return toast.error('Please fill all fields')
@@ -102,7 +114,7 @@ export default function FarmersPage() {
   }
 
   const openEdit = (f: Farmer) => {
-    setForm({ name: f.name, village: f.village, phone: f.phone, cattle: f.cattle })
+    setForm({ name: f.name, village: f.village, phone: f.phone, cattle: f.cattle, customPricing: f.customPricing || false, includesSnf: f.includesSnf || false })
     setEditFarmer(f)
   }
 
@@ -126,7 +138,7 @@ export default function FarmersPage() {
   const handleBookDone = async () => {
     const valid = bookRows.filter(r => r.name.trim() && r.village.trim() && r.phone.trim())
     if (valid.length === 0) return toast.error('No valid entries to save. Fill at least name, village & phone.')
-    const rows = valid.map(r => ({ name: r.name.trim(), village: r.village.trim(), phone: r.phone.trim(), cattle: r.cattle || 1 }))
+    const rows = valid.map(r => ({ name: r.name.trim(), village: r.village.trim(), phone: r.phone.trim(), cattle: r.cattle || 1, customPricing: r.customPricing || false, includesSnf: r.includesSnf || false }))
     const res = await addFarmersBulk(rows)
     if (res.error) {
       return toast.error(res.error)

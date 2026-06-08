@@ -43,6 +43,8 @@ export type FarmerMinAggregateOutputType = {
   village: string | null
   phone: string | null
   cattle: number | null
+  customPricing: boolean | null
+  includesSnf: boolean | null
   status: string | null
   joinDate: string | null
   balance: number | null
@@ -55,6 +57,8 @@ export type FarmerMaxAggregateOutputType = {
   village: string | null
   phone: string | null
   cattle: number | null
+  customPricing: boolean | null
+  includesSnf: boolean | null
   status: string | null
   joinDate: string | null
   balance: number | null
@@ -67,6 +71,8 @@ export type FarmerCountAggregateOutputType = {
   village: number
   phone: number
   cattle: number
+  customPricing: number
+  includesSnf: number
   status: number
   joinDate: number
   balance: number
@@ -91,6 +97,8 @@ export type FarmerMinAggregateInputType = {
   village?: true
   phone?: true
   cattle?: true
+  customPricing?: true
+  includesSnf?: true
   status?: true
   joinDate?: true
   balance?: true
@@ -103,6 +111,8 @@ export type FarmerMaxAggregateInputType = {
   village?: true
   phone?: true
   cattle?: true
+  customPricing?: true
+  includesSnf?: true
   status?: true
   joinDate?: true
   balance?: true
@@ -115,6 +125,8 @@ export type FarmerCountAggregateInputType = {
   village?: true
   phone?: true
   cattle?: true
+  customPricing?: true
+  includesSnf?: true
   status?: true
   joinDate?: true
   balance?: true
@@ -214,6 +226,8 @@ export type FarmerGroupByOutputType = {
   village: string
   phone: string
   cattle: number
+  customPricing: boolean
+  includesSnf: boolean
   status: string
   joinDate: string
   balance: number
@@ -249,6 +263,8 @@ export type FarmerWhereInput = {
   village?: Prisma.StringFilter<"Farmer"> | string
   phone?: Prisma.StringFilter<"Farmer"> | string
   cattle?: Prisma.IntFilter<"Farmer"> | number
+  customPricing?: Prisma.BoolFilter<"Farmer"> | boolean
+  includesSnf?: Prisma.BoolFilter<"Farmer"> | boolean
   status?: Prisma.StringFilter<"Farmer"> | string
   joinDate?: Prisma.StringFilter<"Farmer"> | string
   balance?: Prisma.FloatFilter<"Farmer"> | number
@@ -264,6 +280,8 @@ export type FarmerOrderByWithRelationInput = {
   village?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   cattle?: Prisma.SortOrder
+  customPricing?: Prisma.SortOrder
+  includesSnf?: Prisma.SortOrder
   status?: Prisma.SortOrder
   joinDate?: Prisma.SortOrder
   balance?: Prisma.SortOrder
@@ -282,6 +300,8 @@ export type FarmerWhereUniqueInput = Prisma.AtLeast<{
   village?: Prisma.StringFilter<"Farmer"> | string
   phone?: Prisma.StringFilter<"Farmer"> | string
   cattle?: Prisma.IntFilter<"Farmer"> | number
+  customPricing?: Prisma.BoolFilter<"Farmer"> | boolean
+  includesSnf?: Prisma.BoolFilter<"Farmer"> | boolean
   status?: Prisma.StringFilter<"Farmer"> | string
   joinDate?: Prisma.StringFilter<"Farmer"> | string
   balance?: Prisma.FloatFilter<"Farmer"> | number
@@ -297,6 +317,8 @@ export type FarmerOrderByWithAggregationInput = {
   village?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   cattle?: Prisma.SortOrder
+  customPricing?: Prisma.SortOrder
+  includesSnf?: Prisma.SortOrder
   status?: Prisma.SortOrder
   joinDate?: Prisma.SortOrder
   balance?: Prisma.SortOrder
@@ -317,6 +339,8 @@ export type FarmerScalarWhereWithAggregatesInput = {
   village?: Prisma.StringWithAggregatesFilter<"Farmer"> | string
   phone?: Prisma.StringWithAggregatesFilter<"Farmer"> | string
   cattle?: Prisma.IntWithAggregatesFilter<"Farmer"> | number
+  customPricing?: Prisma.BoolWithAggregatesFilter<"Farmer"> | boolean
+  includesSnf?: Prisma.BoolWithAggregatesFilter<"Farmer"> | boolean
   status?: Prisma.StringWithAggregatesFilter<"Farmer"> | string
   joinDate?: Prisma.StringWithAggregatesFilter<"Farmer"> | string
   balance?: Prisma.FloatWithAggregatesFilter<"Farmer"> | number
@@ -329,6 +353,8 @@ export type FarmerCreateInput = {
   village: string
   phone: string
   cattle?: number
+  customPricing?: boolean
+  includesSnf?: boolean
   status?: string
   joinDate: string
   balance?: number
@@ -344,6 +370,8 @@ export type FarmerUncheckedCreateInput = {
   village: string
   phone: string
   cattle?: number
+  customPricing?: boolean
+  includesSnf?: boolean
   status?: string
   joinDate: string
   balance?: number
@@ -359,6 +387,8 @@ export type FarmerUpdateInput = {
   village?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   cattle?: Prisma.IntFieldUpdateOperationsInput | number
+  customPricing?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  includesSnf?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   joinDate?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -374,6 +404,8 @@ export type FarmerUncheckedUpdateInput = {
   village?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   cattle?: Prisma.IntFieldUpdateOperationsInput | number
+  customPricing?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  includesSnf?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   joinDate?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -389,6 +421,8 @@ export type FarmerCreateManyInput = {
   village: string
   phone: string
   cattle?: number
+  customPricing?: boolean
+  includesSnf?: boolean
   status?: string
   joinDate: string
   balance?: number
@@ -401,6 +435,8 @@ export type FarmerUpdateManyMutationInput = {
   village?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   cattle?: Prisma.IntFieldUpdateOperationsInput | number
+  customPricing?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  includesSnf?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   joinDate?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -413,6 +449,8 @@ export type FarmerUncheckedUpdateManyInput = {
   village?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   cattle?: Prisma.IntFieldUpdateOperationsInput | number
+  customPricing?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  includesSnf?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   joinDate?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -425,6 +463,8 @@ export type FarmerCountOrderByAggregateInput = {
   village?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   cattle?: Prisma.SortOrder
+  customPricing?: Prisma.SortOrder
+  includesSnf?: Prisma.SortOrder
   status?: Prisma.SortOrder
   joinDate?: Prisma.SortOrder
   balance?: Prisma.SortOrder
@@ -442,6 +482,8 @@ export type FarmerMaxOrderByAggregateInput = {
   village?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   cattle?: Prisma.SortOrder
+  customPricing?: Prisma.SortOrder
+  includesSnf?: Prisma.SortOrder
   status?: Prisma.SortOrder
   joinDate?: Prisma.SortOrder
   balance?: Prisma.SortOrder
@@ -454,6 +496,8 @@ export type FarmerMinOrderByAggregateInput = {
   village?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   cattle?: Prisma.SortOrder
+  customPricing?: Prisma.SortOrder
+  includesSnf?: Prisma.SortOrder
   status?: Prisma.SortOrder
   joinDate?: Prisma.SortOrder
   balance?: Prisma.SortOrder
@@ -475,6 +519,10 @@ export type IntFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
 }
 
 export type FloatFieldUpdateOperationsInput = {
@@ -534,6 +582,8 @@ export type FarmerCreateWithoutCollectionsInput = {
   village: string
   phone: string
   cattle?: number
+  customPricing?: boolean
+  includesSnf?: boolean
   status?: string
   joinDate: string
   balance?: number
@@ -548,6 +598,8 @@ export type FarmerUncheckedCreateWithoutCollectionsInput = {
   village: string
   phone: string
   cattle?: number
+  customPricing?: boolean
+  includesSnf?: boolean
   status?: string
   joinDate: string
   balance?: number
@@ -578,6 +630,8 @@ export type FarmerUpdateWithoutCollectionsInput = {
   village?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   cattle?: Prisma.IntFieldUpdateOperationsInput | number
+  customPricing?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  includesSnf?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   joinDate?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -592,6 +646,8 @@ export type FarmerUncheckedUpdateWithoutCollectionsInput = {
   village?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   cattle?: Prisma.IntFieldUpdateOperationsInput | number
+  customPricing?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  includesSnf?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   joinDate?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -606,6 +662,8 @@ export type FarmerCreateWithoutPaymentsInput = {
   village: string
   phone: string
   cattle?: number
+  customPricing?: boolean
+  includesSnf?: boolean
   status?: string
   joinDate: string
   balance?: number
@@ -620,6 +678,8 @@ export type FarmerUncheckedCreateWithoutPaymentsInput = {
   village: string
   phone: string
   cattle?: number
+  customPricing?: boolean
+  includesSnf?: boolean
   status?: string
   joinDate: string
   balance?: number
@@ -650,6 +710,8 @@ export type FarmerUpdateWithoutPaymentsInput = {
   village?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   cattle?: Prisma.IntFieldUpdateOperationsInput | number
+  customPricing?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  includesSnf?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   joinDate?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -664,6 +726,8 @@ export type FarmerUncheckedUpdateWithoutPaymentsInput = {
   village?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   cattle?: Prisma.IntFieldUpdateOperationsInput | number
+  customPricing?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  includesSnf?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   joinDate?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -678,6 +742,8 @@ export type FarmerCreateWithoutReceiptsInput = {
   village: string
   phone: string
   cattle?: number
+  customPricing?: boolean
+  includesSnf?: boolean
   status?: string
   joinDate: string
   balance?: number
@@ -692,6 +758,8 @@ export type FarmerUncheckedCreateWithoutReceiptsInput = {
   village: string
   phone: string
   cattle?: number
+  customPricing?: boolean
+  includesSnf?: boolean
   status?: string
   joinDate: string
   balance?: number
@@ -722,6 +790,8 @@ export type FarmerUpdateWithoutReceiptsInput = {
   village?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   cattle?: Prisma.IntFieldUpdateOperationsInput | number
+  customPricing?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  includesSnf?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   joinDate?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -736,6 +806,8 @@ export type FarmerUncheckedUpdateWithoutReceiptsInput = {
   village?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   cattle?: Prisma.IntFieldUpdateOperationsInput | number
+  customPricing?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  includesSnf?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   joinDate?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -799,6 +871,8 @@ export type FarmerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   village?: boolean
   phone?: boolean
   cattle?: boolean
+  customPricing?: boolean
+  includesSnf?: boolean
   status?: boolean
   joinDate?: boolean
   balance?: boolean
@@ -815,6 +889,8 @@ export type FarmerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   village?: boolean
   phone?: boolean
   cattle?: boolean
+  customPricing?: boolean
+  includesSnf?: boolean
   status?: boolean
   joinDate?: boolean
   balance?: boolean
@@ -827,6 +903,8 @@ export type FarmerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   village?: boolean
   phone?: boolean
   cattle?: boolean
+  customPricing?: boolean
+  includesSnf?: boolean
   status?: boolean
   joinDate?: boolean
   balance?: boolean
@@ -839,12 +917,14 @@ export type FarmerSelectScalar = {
   village?: boolean
   phone?: boolean
   cattle?: boolean
+  customPricing?: boolean
+  includesSnf?: boolean
   status?: boolean
   joinDate?: boolean
   balance?: boolean
 }
 
-export type FarmerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "displayId" | "name" | "village" | "phone" | "cattle" | "status" | "joinDate" | "balance", ExtArgs["result"]["farmer"]>
+export type FarmerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "displayId" | "name" | "village" | "phone" | "cattle" | "customPricing" | "includesSnf" | "status" | "joinDate" | "balance", ExtArgs["result"]["farmer"]>
 export type FarmerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   collections?: boolean | Prisma.Farmer$collectionsArgs<ExtArgs>
   payments?: boolean | Prisma.Farmer$paymentsArgs<ExtArgs>
@@ -868,6 +948,8 @@ export type $FarmerPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     village: string
     phone: string
     cattle: number
+    customPricing: boolean
+    includesSnf: boolean
     status: string
     joinDate: string
     balance: number
@@ -1303,6 +1385,8 @@ export interface FarmerFieldRefs {
   readonly village: Prisma.FieldRef<"Farmer", 'String'>
   readonly phone: Prisma.FieldRef<"Farmer", 'String'>
   readonly cattle: Prisma.FieldRef<"Farmer", 'Int'>
+  readonly customPricing: Prisma.FieldRef<"Farmer", 'Boolean'>
+  readonly includesSnf: Prisma.FieldRef<"Farmer", 'Boolean'>
   readonly status: Prisma.FieldRef<"Farmer", 'String'>
   readonly joinDate: Prisma.FieldRef<"Farmer", 'String'>
   readonly balance: Prisma.FieldRef<"Farmer", 'Float'>

@@ -25,15 +25,18 @@ async function main() {
   console.log('🌱 Seeding DairyFlow database...')
 
   // ── Users ──────────────────────────────────────────────────────────────────
-  const adminPw = await bcrypt.hash('admin123', 10)
-  const staffPw = await bcrypt.hash('staff123', 10)
+  const adminPw  = await bcrypt.hash('admin123', 10)
+  const staffPw  = await bcrypt.hash('staff123', 10)
+  const adminPin = await bcrypt.hash('1234', 10)  // demo PIN
+  const staffPin = await bcrypt.hash('5678', 10)  // demo PIN
 
   const admin = await prisma.user.upsert({
     where: { email: 'admin@dairy.com' },
-    update: {},
+    update: { pin: adminPin },
     create: {
       email: 'admin@dairy.com',
       password: adminPw,
+      pin: adminPin,
       name: 'Admin User',
       role: 'admin',
       avatar: 'AU',
@@ -42,17 +45,18 @@ async function main() {
 
   const staff = await prisma.user.upsert({
     where: { email: 'staff@dairy.com' },
-    update: {},
+    update: { pin: staffPin },
     create: {
       email: 'staff@dairy.com',
       password: staffPw,
+      pin: staffPin,
       name: 'Staff Member',
       role: 'staff',
       avatar: 'SM',
     },
   })
 
-  console.log('  ✅ Users created')
+  console.log('  ✅ Users created (with PINs)')
 
   // ── Farmers ────────────────────────────────────────────────────────────────
   const farmerData = [

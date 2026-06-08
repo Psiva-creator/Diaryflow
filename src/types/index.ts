@@ -6,6 +6,8 @@ export interface Farmer {
   village: string
   phone: string
   cattle: number
+  customPricing?: boolean
+  includesSnf?: boolean
   status: 'active' | 'inactive'
   joinDate: string
   balance: number
@@ -98,6 +100,8 @@ export interface FarmerFormData {
   village: string
   phone: string
   cattle: number
+  customPricing?: boolean
+  includesSnf?: boolean
 }
 
 export interface CustomerFormData {

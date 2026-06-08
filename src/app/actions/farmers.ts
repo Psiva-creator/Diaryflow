@@ -29,6 +29,8 @@ export async function addFarmer(data: FarmerFormData) {
       village: parsed.data.village,
       phone: parsed.data.phone,
       cattle: parsed.data.cattle,
+      customPricing: parsed.data.customPricing ?? false,
+      includesSnf: parsed.data.includesSnf ?? false,
       status: 'active',
       joinDate: today,
       balance: 0,
@@ -69,6 +71,8 @@ export async function addFarmersBulk(rows: FarmerFormData[]) {
         village: row.village,
         phone: row.phone,
         cattle: row.cattle,
+        customPricing: row.customPricing ?? false,
+        includesSnf: row.includesSnf ?? false,
         status: 'active',
         joinDate: today,
         balance: 0,
@@ -92,6 +96,8 @@ export async function updateFarmer(displayId: string, data: Partial<FarmerFormDa
       ...(data.village !== undefined && { village: data.village }),
       ...(data.phone !== undefined && { phone: data.phone }),
       ...(data.cattle !== undefined && { cattle: data.cattle }),
+      ...(data.customPricing !== undefined && { customPricing: data.customPricing }),
+      ...(data.includesSnf !== undefined && { includesSnf: data.includesSnf }),
     },
   })
 

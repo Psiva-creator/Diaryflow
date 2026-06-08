@@ -15,6 +15,7 @@ model User {
   id            String         @id @default(cuid())
   email         String         @unique
   password      String
+  pin           String         @default("") // bcrypt-hashed 4-digit PIN
   name          String
   role          String         @default("staff") // "admin" | "staff"
   avatar        String         @default("")
@@ -29,6 +30,8 @@ model Farmer {
   village     String
   phone       String
   cattle      Int          @default(1)
+  customPricing Boolean    @default(false)
+  includesSnf   Boolean    @default(false)
   status      String       @default("active") // "active" | "inactive"
   joinDate    String
   balance     Float        @default(0)
