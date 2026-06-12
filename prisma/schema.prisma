@@ -19,13 +19,23 @@ model User {
   name          String
   role          String         @default("staff") // "admin" | "staff"
   avatar        String         @default("")
+  dairyCode     String         @unique @default(cuid()) // Unique code for staff to join this admin
+  adminId       String?        // If this user is staff, points to the admin's id
+  admin         User?          @relation("AdminStaff", fields: [adminId], references: [id])
+  staff         User[]         @relation("AdminStaff")
   createdAt     DateTime       @default(now())
   notifications Notification[]
+  farmers       Farmer[]
+  customers     Customer[]
+  collections   Collection[]
+  payments      Payment[]
+  receipts      Receipt[]
+  tanks         Tank[]
 }
 
 model Farmer {
   id          String       @id @default(cuid())
-  displayId   String       @unique // e.g. "F001"
+  displayId   String       // e.g. "F001" — unique per user
   name        String
   village     String
   phone       String
@@ -35,14 +45,18 @@ model Farmer {
   status      String       @default("active") // "active" | "inactive"
   joinDate    String
   balance     Float        @default(0)
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
   collections Collection[]
   payments    Payment[]
   receipts    Receipt[]
+
+  @@unique([userId, displayId])
 }
 
 model Customer {
   id        String @id @default(cuid())
-  displayId String @unique // e.g. "C001"
+  displayId String // e.g. "C001" — unique per user
   name      String
   type      String @default("retail") // "retail" | "bulk" | "subscription"
   phone     String
@@ -50,11 +64,15 @@ model Customer {
   dailyQty  Float  @default(0)
   status    String @default("active") // "active" | "inactive"
   balance   Float  @default(0)
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+
+  @@unique([userId, displayId])
 }
 
 model Collection {
   id         String @id @default(cuid())
-  displayId  String @unique // e.g. "MC0001"
+  displayId  String // e.g. "MC0001" — unique per user
   farmer     Farmer @relation(fields: [farmerId], references: [id], onDelete: Cascade)
   farmerId   String
   farmerName String
@@ -67,11 +85,15 @@ model Collection {
   rate       Float
   amount     Float
   status     String @default("accepted") // "accepted" | "pending"
+  user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+
+  @@unique([userId, displayId])
 }
 
 model Payment {
   id         String   @id @default(cuid())
-  displayId  String   @unique // e.g. "P001"
+  displayId  String   // e.g. "P001" — unique per user
   farmer     Farmer   @relation(fields: [farmerId], references: [id], onDelete: Cascade)
   farmerId   String
   farmerName String
@@ -80,12 +102,16 @@ model Payment {
   method     String // "cash" | "bank" | "upi" | "cheque"
   status     String   @default("pending") // "paid" | "pending"
   note       String   @default("")
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
   receipts   Receipt[]
+
+  @@unique([userId, displayId])
 }
 
 model Receipt {
   id         String  @id @default(cuid())
-  displayId  String  @unique // e.g. "R001"
+  displayId  String  // e.g. "R001" — unique per user
   payment    Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
   paymentId  String
   farmer     Farmer  @relation(fields: [farmerId], references: [id], onDelete: Cascade)
@@ -96,17 +122,25 @@ model Receipt {
   paidDate   String
   method     String // "cash" | "bank" | "upi" | "cheque"
   note       String  @default("")
+  user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+
+  @@unique([userId, displayId])
 }
 
 model Tank {
   id          String @id @default(cuid())
-  displayId   String @unique // e.g. "T001"
+  displayId   String // e.g. "T001" — unique per user
   name        String
   capacity    Float
   current     Float  @default(0)
   temp        Float  @default(4.0)
   status      String @default("operational") // "operational" | "maintenance"
   lastCleaned String
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+
+  @@unique([userId, displayId])
 }
 
 model Notification {

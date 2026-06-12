@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/db'
 import { paymentSchema } from '@/lib/schemas'
+import { getSession } from '@/lib/session'
 
 interface AddPaymentInput {
   farmerId: string       // display ID like "F001"
@@ -15,6 +16,9 @@ interface AddPaymentInput {
 }
 
 export async function addPayment(data: AddPaymentInput) {
+  const session = await getSession()
+  if (!session) return { error: 'Unauthorized' }
+
   const parsed = paymentSchema.safeParse({
     farmerId: data.farmerId,
     amount: data.amount,
@@ -26,14 +30,15 @@ export async function addPayment(data: AddPaymentInput) {
     return { error: parsed.error.flatten().fieldErrors }
   }
 
-  // Find farmer
-  const farmer = await prisma.farmer.findUnique({
-    where: { displayId: data.farmerId },
+  // Find farmer scoped to user
+  const farmer = await prisma.farmer.findFirst({
+    where: { displayId: data.farmerId, userId: session.userId },
   })
   if (!farmer) return { error: 'Farmer not found' }
 
-  // Generate display ID
+  // Generate display ID scoped to user
   const lastPayment = await prisma.payment.findFirst({
+    where: { userId: session.userId },
     orderBy: { displayId: 'desc' },
   })
   const lastNum = lastPayment
@@ -53,6 +58,7 @@ export async function addPayment(data: AddPaymentInput) {
         method: data.method,
         status: data.status,
         note: data.note || '',
+        userId: session.userId,
       },
     })
 
@@ -65,6 +71,7 @@ export async function addPayment(data: AddPaymentInput) {
 
       // Auto-create receipt
       const lastReceipt = await tx.receipt.findFirst({
+        where: { userId: session.userId },
         orderBy: { displayId: 'desc' },
       })
       const lastRNum = lastReceipt
@@ -74,7 +81,9 @@ export async function addPayment(data: AddPaymentInput) {
       const today = new Date().toISOString().split('T')[0]
 
       // We need to find the payment we just created
-      const createdPayment = await tx.payment.findUnique({ where: { displayId } })
+      const createdPayment = await tx.payment.findFirst({
+        where: { displayId, userId: session.userId },
+      })
       if (createdPayment) {
         await tx.receipt.create({
           data: {
@@ -87,6 +96,7 @@ export async function addPayment(data: AddPaymentInput) {
             paidDate: today,
             method: data.method,
             note: data.note || '',
+            userId: session.userId,
           },
         })
       }
@@ -101,8 +111,11 @@ export async function addPayment(data: AddPaymentInput) {
 }
 
 export async function markPaymentPaid(paymentDisplayId: string) {
-  const payment = await prisma.payment.findUnique({
-    where: { displayId: paymentDisplayId },
+  const session = await getSession()
+  if (!session) return { error: 'Unauthorized' }
+
+  const payment = await prisma.payment.findFirst({
+    where: { displayId: paymentDisplayId, userId: session.userId },
   })
   if (!payment) return { error: 'Payment not found' }
   if (payment.status === 'paid') return { error: 'Payment already marked as paid' }
@@ -112,7 +125,7 @@ export async function markPaymentPaid(paymentDisplayId: string) {
   await prisma.$transaction(async (tx) => {
     // Mark payment as paid
     await tx.payment.update({
-      where: { displayId: paymentDisplayId },
+      where: { id: payment.id },
       data: { status: 'paid' },
     })
 
@@ -124,6 +137,7 @@ export async function markPaymentPaid(paymentDisplayId: string) {
 
     // Auto-generate receipt
     const lastReceipt = await tx.receipt.findFirst({
+      where: { userId: session.userId },
       orderBy: { displayId: 'desc' },
     })
     const lastRNum = lastReceipt
@@ -142,6 +156,7 @@ export async function markPaymentPaid(paymentDisplayId: string) {
         paidDate: today,
         method: payment.method,
         note: payment.note,
+        userId: session.userId,
       },
     })
   })

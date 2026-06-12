@@ -84,6 +84,7 @@ export interface User {
   name: string
   role: 'admin' | 'staff'
   avatar: string
+  dairyCode?: string
 }
 
 // ── Rate Table ────────────────────────────────────────────────────────────────

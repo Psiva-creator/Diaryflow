@@ -47,6 +47,7 @@ export type TankMinAggregateOutputType = {
   temp: number | null
   status: string | null
   lastCleaned: string | null
+  userId: string | null
 }
 
 export type TankMaxAggregateOutputType = {
@@ -58,6 +59,7 @@ export type TankMaxAggregateOutputType = {
   temp: number | null
   status: string | null
   lastCleaned: string | null
+  userId: string | null
 }
 
 export type TankCountAggregateOutputType = {
@@ -69,6 +71,7 @@ export type TankCountAggregateOutputType = {
   temp: number
   status: number
   lastCleaned: number
+  userId: number
   _all: number
 }
 
@@ -94,6 +97,7 @@ export type TankMinAggregateInputType = {
   temp?: true
   status?: true
   lastCleaned?: true
+  userId?: true
 }
 
 export type TankMaxAggregateInputType = {
@@ -105,6 +109,7 @@ export type TankMaxAggregateInputType = {
   temp?: true
   status?: true
   lastCleaned?: true
+  userId?: true
 }
 
 export type TankCountAggregateInputType = {
@@ -116,6 +121,7 @@ export type TankCountAggregateInputType = {
   temp?: true
   status?: true
   lastCleaned?: true
+  userId?: true
   _all?: true
 }
 
@@ -214,6 +220,7 @@ export type TankGroupByOutputType = {
   temp: number
   status: string
   lastCleaned: string
+  userId: string
   _count: TankCountAggregateOutputType | null
   _avg: TankAvgAggregateOutputType | null
   _sum: TankSumAggregateOutputType | null
@@ -248,6 +255,8 @@ export type TankWhereInput = {
   temp?: Prisma.FloatFilter<"Tank"> | number
   status?: Prisma.StringFilter<"Tank"> | string
   lastCleaned?: Prisma.StringFilter<"Tank"> | string
+  userId?: Prisma.StringFilter<"Tank"> | string
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type TankOrderByWithRelationInput = {
@@ -259,21 +268,26 @@ export type TankOrderByWithRelationInput = {
   temp?: Prisma.SortOrder
   status?: Prisma.SortOrder
   lastCleaned?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type TankWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  displayId?: string
+  userId_displayId?: Prisma.TankUserIdDisplayIdCompoundUniqueInput
   AND?: Prisma.TankWhereInput | Prisma.TankWhereInput[]
   OR?: Prisma.TankWhereInput[]
   NOT?: Prisma.TankWhereInput | Prisma.TankWhereInput[]
+  displayId?: Prisma.StringFilter<"Tank"> | string
   name?: Prisma.StringFilter<"Tank"> | string
   capacity?: Prisma.FloatFilter<"Tank"> | number
   current?: Prisma.FloatFilter<"Tank"> | number
   temp?: Prisma.FloatFilter<"Tank"> | number
   status?: Prisma.StringFilter<"Tank"> | string
   lastCleaned?: Prisma.StringFilter<"Tank"> | string
-}, "id" | "displayId">
+  userId?: Prisma.StringFilter<"Tank"> | string
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+}, "id" | "userId_displayId">
 
 export type TankOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -284,6 +298,7 @@ export type TankOrderByWithAggregationInput = {
   temp?: Prisma.SortOrder
   status?: Prisma.SortOrder
   lastCleaned?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   _count?: Prisma.TankCountOrderByAggregateInput
   _avg?: Prisma.TankAvgOrderByAggregateInput
   _max?: Prisma.TankMaxOrderByAggregateInput
@@ -303,6 +318,7 @@ export type TankScalarWhereWithAggregatesInput = {
   temp?: Prisma.FloatWithAggregatesFilter<"Tank"> | number
   status?: Prisma.StringWithAggregatesFilter<"Tank"> | string
   lastCleaned?: Prisma.StringWithAggregatesFilter<"Tank"> | string
+  userId?: Prisma.StringWithAggregatesFilter<"Tank"> | string
 }
 
 export type TankCreateInput = {
@@ -314,6 +330,7 @@ export type TankCreateInput = {
   temp?: number
   status?: string
   lastCleaned: string
+  user: Prisma.UserCreateNestedOneWithoutTanksInput
 }
 
 export type TankUncheckedCreateInput = {
@@ -325,6 +342,7 @@ export type TankUncheckedCreateInput = {
   temp?: number
   status?: string
   lastCleaned: string
+  userId: string
 }
 
 export type TankUpdateInput = {
@@ -336,6 +354,7 @@ export type TankUpdateInput = {
   temp?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
   lastCleaned?: Prisma.StringFieldUpdateOperationsInput | string
+  user?: Prisma.UserUpdateOneRequiredWithoutTanksNestedInput
 }
 
 export type TankUncheckedUpdateInput = {
@@ -347,6 +366,7 @@ export type TankUncheckedUpdateInput = {
   temp?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
   lastCleaned?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type TankCreateManyInput = {
@@ -358,6 +378,7 @@ export type TankCreateManyInput = {
   temp?: number
   status?: string
   lastCleaned: string
+  userId: string
 }
 
 export type TankUpdateManyMutationInput = {
@@ -380,6 +401,22 @@ export type TankUncheckedUpdateManyInput = {
   temp?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
   lastCleaned?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type TankListRelationFilter = {
+  every?: Prisma.TankWhereInput
+  some?: Prisma.TankWhereInput
+  none?: Prisma.TankWhereInput
+}
+
+export type TankOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type TankUserIdDisplayIdCompoundUniqueInput = {
+  userId: string
+  displayId: string
 }
 
 export type TankCountOrderByAggregateInput = {
@@ -391,6 +428,7 @@ export type TankCountOrderByAggregateInput = {
   temp?: Prisma.SortOrder
   status?: Prisma.SortOrder
   lastCleaned?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type TankAvgOrderByAggregateInput = {
@@ -408,6 +446,7 @@ export type TankMaxOrderByAggregateInput = {
   temp?: Prisma.SortOrder
   status?: Prisma.SortOrder
   lastCleaned?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type TankMinOrderByAggregateInput = {
@@ -419,12 +458,162 @@ export type TankMinOrderByAggregateInput = {
   temp?: Prisma.SortOrder
   status?: Prisma.SortOrder
   lastCleaned?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type TankSumOrderByAggregateInput = {
   capacity?: Prisma.SortOrder
   current?: Prisma.SortOrder
   temp?: Prisma.SortOrder
+}
+
+export type TankCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.TankCreateWithoutUserInput, Prisma.TankUncheckedCreateWithoutUserInput> | Prisma.TankCreateWithoutUserInput[] | Prisma.TankUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.TankCreateOrConnectWithoutUserInput | Prisma.TankCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.TankCreateManyUserInputEnvelope
+  connect?: Prisma.TankWhereUniqueInput | Prisma.TankWhereUniqueInput[]
+}
+
+export type TankUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.TankCreateWithoutUserInput, Prisma.TankUncheckedCreateWithoutUserInput> | Prisma.TankCreateWithoutUserInput[] | Prisma.TankUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.TankCreateOrConnectWithoutUserInput | Prisma.TankCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.TankCreateManyUserInputEnvelope
+  connect?: Prisma.TankWhereUniqueInput | Prisma.TankWhereUniqueInput[]
+}
+
+export type TankUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.TankCreateWithoutUserInput, Prisma.TankUncheckedCreateWithoutUserInput> | Prisma.TankCreateWithoutUserInput[] | Prisma.TankUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.TankCreateOrConnectWithoutUserInput | Prisma.TankCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.TankUpsertWithWhereUniqueWithoutUserInput | Prisma.TankUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.TankCreateManyUserInputEnvelope
+  set?: Prisma.TankWhereUniqueInput | Prisma.TankWhereUniqueInput[]
+  disconnect?: Prisma.TankWhereUniqueInput | Prisma.TankWhereUniqueInput[]
+  delete?: Prisma.TankWhereUniqueInput | Prisma.TankWhereUniqueInput[]
+  connect?: Prisma.TankWhereUniqueInput | Prisma.TankWhereUniqueInput[]
+  update?: Prisma.TankUpdateWithWhereUniqueWithoutUserInput | Prisma.TankUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.TankUpdateManyWithWhereWithoutUserInput | Prisma.TankUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.TankScalarWhereInput | Prisma.TankScalarWhereInput[]
+}
+
+export type TankUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.TankCreateWithoutUserInput, Prisma.TankUncheckedCreateWithoutUserInput> | Prisma.TankCreateWithoutUserInput[] | Prisma.TankUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.TankCreateOrConnectWithoutUserInput | Prisma.TankCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.TankUpsertWithWhereUniqueWithoutUserInput | Prisma.TankUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.TankCreateManyUserInputEnvelope
+  set?: Prisma.TankWhereUniqueInput | Prisma.TankWhereUniqueInput[]
+  disconnect?: Prisma.TankWhereUniqueInput | Prisma.TankWhereUniqueInput[]
+  delete?: Prisma.TankWhereUniqueInput | Prisma.TankWhereUniqueInput[]
+  connect?: Prisma.TankWhereUniqueInput | Prisma.TankWhereUniqueInput[]
+  update?: Prisma.TankUpdateWithWhereUniqueWithoutUserInput | Prisma.TankUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.TankUpdateManyWithWhereWithoutUserInput | Prisma.TankUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.TankScalarWhereInput | Prisma.TankScalarWhereInput[]
+}
+
+export type TankCreateWithoutUserInput = {
+  id?: string
+  displayId: string
+  name: string
+  capacity: number
+  current?: number
+  temp?: number
+  status?: string
+  lastCleaned: string
+}
+
+export type TankUncheckedCreateWithoutUserInput = {
+  id?: string
+  displayId: string
+  name: string
+  capacity: number
+  current?: number
+  temp?: number
+  status?: string
+  lastCleaned: string
+}
+
+export type TankCreateOrConnectWithoutUserInput = {
+  where: Prisma.TankWhereUniqueInput
+  create: Prisma.XOR<Prisma.TankCreateWithoutUserInput, Prisma.TankUncheckedCreateWithoutUserInput>
+}
+
+export type TankCreateManyUserInputEnvelope = {
+  data: Prisma.TankCreateManyUserInput | Prisma.TankCreateManyUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type TankUpsertWithWhereUniqueWithoutUserInput = {
+  where: Prisma.TankWhereUniqueInput
+  update: Prisma.XOR<Prisma.TankUpdateWithoutUserInput, Prisma.TankUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.TankCreateWithoutUserInput, Prisma.TankUncheckedCreateWithoutUserInput>
+}
+
+export type TankUpdateWithWhereUniqueWithoutUserInput = {
+  where: Prisma.TankWhereUniqueInput
+  data: Prisma.XOR<Prisma.TankUpdateWithoutUserInput, Prisma.TankUncheckedUpdateWithoutUserInput>
+}
+
+export type TankUpdateManyWithWhereWithoutUserInput = {
+  where: Prisma.TankScalarWhereInput
+  data: Prisma.XOR<Prisma.TankUpdateManyMutationInput, Prisma.TankUncheckedUpdateManyWithoutUserInput>
+}
+
+export type TankScalarWhereInput = {
+  AND?: Prisma.TankScalarWhereInput | Prisma.TankScalarWhereInput[]
+  OR?: Prisma.TankScalarWhereInput[]
+  NOT?: Prisma.TankScalarWhereInput | Prisma.TankScalarWhereInput[]
+  id?: Prisma.StringFilter<"Tank"> | string
+  displayId?: Prisma.StringFilter<"Tank"> | string
+  name?: Prisma.StringFilter<"Tank"> | string
+  capacity?: Prisma.FloatFilter<"Tank"> | number
+  current?: Prisma.FloatFilter<"Tank"> | number
+  temp?: Prisma.FloatFilter<"Tank"> | number
+  status?: Prisma.StringFilter<"Tank"> | string
+  lastCleaned?: Prisma.StringFilter<"Tank"> | string
+  userId?: Prisma.StringFilter<"Tank"> | string
+}
+
+export type TankCreateManyUserInput = {
+  id?: string
+  displayId: string
+  name: string
+  capacity: number
+  current?: number
+  temp?: number
+  status?: string
+  lastCleaned: string
+}
+
+export type TankUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  displayId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  capacity?: Prisma.FloatFieldUpdateOperationsInput | number
+  current?: Prisma.FloatFieldUpdateOperationsInput | number
+  temp?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  lastCleaned?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type TankUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  displayId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  capacity?: Prisma.FloatFieldUpdateOperationsInput | number
+  current?: Prisma.FloatFieldUpdateOperationsInput | number
+  temp?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  lastCleaned?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type TankUncheckedUpdateManyWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  displayId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  capacity?: Prisma.FloatFieldUpdateOperationsInput | number
+  current?: Prisma.FloatFieldUpdateOperationsInput | number
+  temp?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  lastCleaned?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -438,6 +627,8 @@ export type TankSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   temp?: boolean
   status?: boolean
   lastCleaned?: boolean
+  userId?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tank"]>
 
 export type TankSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -449,6 +640,8 @@ export type TankSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   temp?: boolean
   status?: boolean
   lastCleaned?: boolean
+  userId?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tank"]>
 
 export type TankSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -460,6 +653,8 @@ export type TankSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   temp?: boolean
   status?: boolean
   lastCleaned?: boolean
+  userId?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tank"]>
 
 export type TankSelectScalar = {
@@ -471,13 +666,25 @@ export type TankSelectScalar = {
   temp?: boolean
   status?: boolean
   lastCleaned?: boolean
+  userId?: boolean
 }
 
-export type TankOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "displayId" | "name" | "capacity" | "current" | "temp" | "status" | "lastCleaned", ExtArgs["result"]["tank"]>
+export type TankOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "displayId" | "name" | "capacity" | "current" | "temp" | "status" | "lastCleaned" | "userId", ExtArgs["result"]["tank"]>
+export type TankInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type TankIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type TankIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
 
 export type $TankPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Tank"
-  objects: {}
+  objects: {
+    user: Prisma.$UserPayload<ExtArgs>
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     displayId: string
@@ -487,6 +694,7 @@ export type $TankPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     temp: number
     status: string
     lastCleaned: string
+    userId: string
   }, ExtArgs["result"]["tank"]>
   composites: {}
 }
@@ -881,6 +1089,7 @@ readonly fields: TankFieldRefs;
  */
 export interface Prisma__TankClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -918,6 +1127,7 @@ export interface TankFieldRefs {
   readonly temp: Prisma.FieldRef<"Tank", 'Float'>
   readonly status: Prisma.FieldRef<"Tank", 'String'>
   readonly lastCleaned: Prisma.FieldRef<"Tank", 'String'>
+  readonly userId: Prisma.FieldRef<"Tank", 'String'>
 }
     
 
@@ -934,6 +1144,10 @@ export type TankFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Omit specific fields from the Tank
    */
   omit?: Prisma.TankOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TankInclude<ExtArgs> | null
   /**
    * Filter, which Tank to fetch.
    */
@@ -953,6 +1167,10 @@ export type TankFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.TankOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TankInclude<ExtArgs> | null
+  /**
    * Filter, which Tank to fetch.
    */
   where: Prisma.TankWhereUniqueInput
@@ -970,6 +1188,10 @@ export type TankFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Omit specific fields from the Tank
    */
   omit?: Prisma.TankOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TankInclude<ExtArgs> | null
   /**
    * Filter, which Tank to fetch.
    */
@@ -1019,6 +1241,10 @@ export type TankFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   omit?: Prisma.TankOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TankInclude<ExtArgs> | null
+  /**
    * Filter, which Tank to fetch.
    */
   where?: Prisma.TankWhereInput
@@ -1066,6 +1292,10 @@ export type TankFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Omit specific fields from the Tank
    */
   omit?: Prisma.TankOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TankInclude<ExtArgs> | null
   /**
    * Filter, which Tanks to fetch.
    */
@@ -1115,6 +1345,10 @@ export type TankCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   omit?: Prisma.TankOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TankInclude<ExtArgs> | null
+  /**
    * The data needed to create a Tank.
    */
   data: Prisma.XOR<Prisma.TankCreateInput, Prisma.TankUncheckedCreateInput>
@@ -1148,6 +1382,10 @@ export type TankCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    */
   data: Prisma.TankCreateManyInput | Prisma.TankCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TankIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1162,6 +1400,10 @@ export type TankUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    * Omit specific fields from the Tank
    */
   omit?: Prisma.TankOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TankInclude<ExtArgs> | null
   /**
    * The data needed to update a Tank.
    */
@@ -1214,6 +1456,10 @@ export type TankUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    * Limit how many Tanks to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TankIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1228,6 +1474,10 @@ export type TankUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    * Omit specific fields from the Tank
    */
   omit?: Prisma.TankOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TankInclude<ExtArgs> | null
   /**
    * The filter to search for the Tank to update in case it exists.
    */
@@ -1254,6 +1504,10 @@ export type TankDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    * Omit specific fields from the Tank
    */
   omit?: Prisma.TankOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TankInclude<ExtArgs> | null
   /**
    * Filter which Tank to delete.
    */
@@ -1286,4 +1540,8 @@ export type TankDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * Omit specific fields from the Tank
    */
   omit?: Prisma.TankOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TankInclude<ExtArgs> | null
 }

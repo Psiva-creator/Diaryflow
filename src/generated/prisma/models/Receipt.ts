@@ -45,6 +45,7 @@ export type ReceiptMinAggregateOutputType = {
   paidDate: string | null
   method: string | null
   note: string | null
+  userId: string | null
 }
 
 export type ReceiptMaxAggregateOutputType = {
@@ -58,6 +59,7 @@ export type ReceiptMaxAggregateOutputType = {
   paidDate: string | null
   method: string | null
   note: string | null
+  userId: string | null
 }
 
 export type ReceiptCountAggregateOutputType = {
@@ -71,6 +73,7 @@ export type ReceiptCountAggregateOutputType = {
   paidDate: number
   method: number
   note: number
+  userId: number
   _all: number
 }
 
@@ -94,6 +97,7 @@ export type ReceiptMinAggregateInputType = {
   paidDate?: true
   method?: true
   note?: true
+  userId?: true
 }
 
 export type ReceiptMaxAggregateInputType = {
@@ -107,6 +111,7 @@ export type ReceiptMaxAggregateInputType = {
   paidDate?: true
   method?: true
   note?: true
+  userId?: true
 }
 
 export type ReceiptCountAggregateInputType = {
@@ -120,6 +125,7 @@ export type ReceiptCountAggregateInputType = {
   paidDate?: true
   method?: true
   note?: true
+  userId?: true
   _all?: true
 }
 
@@ -220,6 +226,7 @@ export type ReceiptGroupByOutputType = {
   paidDate: string
   method: string
   note: string
+  userId: string
   _count: ReceiptCountAggregateOutputType | null
   _avg: ReceiptAvgAggregateOutputType | null
   _sum: ReceiptSumAggregateOutputType | null
@@ -256,8 +263,10 @@ export type ReceiptWhereInput = {
   paidDate?: Prisma.StringFilter<"Receipt"> | string
   method?: Prisma.StringFilter<"Receipt"> | string
   note?: Prisma.StringFilter<"Receipt"> | string
+  userId?: Prisma.StringFilter<"Receipt"> | string
   payment?: Prisma.XOR<Prisma.PaymentScalarRelationFilter, Prisma.PaymentWhereInput>
   farmer?: Prisma.XOR<Prisma.FarmerScalarRelationFilter, Prisma.FarmerWhereInput>
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type ReceiptOrderByWithRelationInput = {
@@ -271,16 +280,19 @@ export type ReceiptOrderByWithRelationInput = {
   paidDate?: Prisma.SortOrder
   method?: Prisma.SortOrder
   note?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   payment?: Prisma.PaymentOrderByWithRelationInput
   farmer?: Prisma.FarmerOrderByWithRelationInput
+  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type ReceiptWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  displayId?: string
+  userId_displayId?: Prisma.ReceiptUserIdDisplayIdCompoundUniqueInput
   AND?: Prisma.ReceiptWhereInput | Prisma.ReceiptWhereInput[]
   OR?: Prisma.ReceiptWhereInput[]
   NOT?: Prisma.ReceiptWhereInput | Prisma.ReceiptWhereInput[]
+  displayId?: Prisma.StringFilter<"Receipt"> | string
   paymentId?: Prisma.StringFilter<"Receipt"> | string
   farmerId?: Prisma.StringFilter<"Receipt"> | string
   farmerName?: Prisma.StringFilter<"Receipt"> | string
@@ -289,9 +301,11 @@ export type ReceiptWhereUniqueInput = Prisma.AtLeast<{
   paidDate?: Prisma.StringFilter<"Receipt"> | string
   method?: Prisma.StringFilter<"Receipt"> | string
   note?: Prisma.StringFilter<"Receipt"> | string
+  userId?: Prisma.StringFilter<"Receipt"> | string
   payment?: Prisma.XOR<Prisma.PaymentScalarRelationFilter, Prisma.PaymentWhereInput>
   farmer?: Prisma.XOR<Prisma.FarmerScalarRelationFilter, Prisma.FarmerWhereInput>
-}, "id" | "displayId">
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+}, "id" | "userId_displayId">
 
 export type ReceiptOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -304,6 +318,7 @@ export type ReceiptOrderByWithAggregationInput = {
   paidDate?: Prisma.SortOrder
   method?: Prisma.SortOrder
   note?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   _count?: Prisma.ReceiptCountOrderByAggregateInput
   _avg?: Prisma.ReceiptAvgOrderByAggregateInput
   _max?: Prisma.ReceiptMaxOrderByAggregateInput
@@ -325,6 +340,7 @@ export type ReceiptScalarWhereWithAggregatesInput = {
   paidDate?: Prisma.StringWithAggregatesFilter<"Receipt"> | string
   method?: Prisma.StringWithAggregatesFilter<"Receipt"> | string
   note?: Prisma.StringWithAggregatesFilter<"Receipt"> | string
+  userId?: Prisma.StringWithAggregatesFilter<"Receipt"> | string
 }
 
 export type ReceiptCreateInput = {
@@ -338,6 +354,7 @@ export type ReceiptCreateInput = {
   note?: string
   payment: Prisma.PaymentCreateNestedOneWithoutReceiptsInput
   farmer: Prisma.FarmerCreateNestedOneWithoutReceiptsInput
+  user: Prisma.UserCreateNestedOneWithoutReceiptsInput
 }
 
 export type ReceiptUncheckedCreateInput = {
@@ -351,6 +368,7 @@ export type ReceiptUncheckedCreateInput = {
   paidDate: string
   method: string
   note?: string
+  userId: string
 }
 
 export type ReceiptUpdateInput = {
@@ -364,6 +382,7 @@ export type ReceiptUpdateInput = {
   note?: Prisma.StringFieldUpdateOperationsInput | string
   payment?: Prisma.PaymentUpdateOneRequiredWithoutReceiptsNestedInput
   farmer?: Prisma.FarmerUpdateOneRequiredWithoutReceiptsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutReceiptsNestedInput
 }
 
 export type ReceiptUncheckedUpdateInput = {
@@ -377,6 +396,7 @@ export type ReceiptUncheckedUpdateInput = {
   paidDate?: Prisma.StringFieldUpdateOperationsInput | string
   method?: Prisma.StringFieldUpdateOperationsInput | string
   note?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ReceiptCreateManyInput = {
@@ -390,6 +410,7 @@ export type ReceiptCreateManyInput = {
   paidDate: string
   method: string
   note?: string
+  userId: string
 }
 
 export type ReceiptUpdateManyMutationInput = {
@@ -414,6 +435,7 @@ export type ReceiptUncheckedUpdateManyInput = {
   paidDate?: Prisma.StringFieldUpdateOperationsInput | string
   method?: Prisma.StringFieldUpdateOperationsInput | string
   note?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ReceiptListRelationFilter = {
@@ -424,6 +446,11 @@ export type ReceiptListRelationFilter = {
 
 export type ReceiptOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type ReceiptUserIdDisplayIdCompoundUniqueInput = {
+  userId: string
+  displayId: string
 }
 
 export type ReceiptCountOrderByAggregateInput = {
@@ -437,6 +464,7 @@ export type ReceiptCountOrderByAggregateInput = {
   paidDate?: Prisma.SortOrder
   method?: Prisma.SortOrder
   note?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type ReceiptAvgOrderByAggregateInput = {
@@ -454,6 +482,7 @@ export type ReceiptMaxOrderByAggregateInput = {
   paidDate?: Prisma.SortOrder
   method?: Prisma.SortOrder
   note?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type ReceiptMinOrderByAggregateInput = {
@@ -467,10 +496,53 @@ export type ReceiptMinOrderByAggregateInput = {
   paidDate?: Prisma.SortOrder
   method?: Prisma.SortOrder
   note?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type ReceiptSumOrderByAggregateInput = {
   amount?: Prisma.SortOrder
+}
+
+export type ReceiptCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.ReceiptCreateWithoutUserInput, Prisma.ReceiptUncheckedCreateWithoutUserInput> | Prisma.ReceiptCreateWithoutUserInput[] | Prisma.ReceiptUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ReceiptCreateOrConnectWithoutUserInput | Prisma.ReceiptCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.ReceiptCreateManyUserInputEnvelope
+  connect?: Prisma.ReceiptWhereUniqueInput | Prisma.ReceiptWhereUniqueInput[]
+}
+
+export type ReceiptUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.ReceiptCreateWithoutUserInput, Prisma.ReceiptUncheckedCreateWithoutUserInput> | Prisma.ReceiptCreateWithoutUserInput[] | Prisma.ReceiptUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ReceiptCreateOrConnectWithoutUserInput | Prisma.ReceiptCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.ReceiptCreateManyUserInputEnvelope
+  connect?: Prisma.ReceiptWhereUniqueInput | Prisma.ReceiptWhereUniqueInput[]
+}
+
+export type ReceiptUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.ReceiptCreateWithoutUserInput, Prisma.ReceiptUncheckedCreateWithoutUserInput> | Prisma.ReceiptCreateWithoutUserInput[] | Prisma.ReceiptUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ReceiptCreateOrConnectWithoutUserInput | Prisma.ReceiptCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.ReceiptUpsertWithWhereUniqueWithoutUserInput | Prisma.ReceiptUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.ReceiptCreateManyUserInputEnvelope
+  set?: Prisma.ReceiptWhereUniqueInput | Prisma.ReceiptWhereUniqueInput[]
+  disconnect?: Prisma.ReceiptWhereUniqueInput | Prisma.ReceiptWhereUniqueInput[]
+  delete?: Prisma.ReceiptWhereUniqueInput | Prisma.ReceiptWhereUniqueInput[]
+  connect?: Prisma.ReceiptWhereUniqueInput | Prisma.ReceiptWhereUniqueInput[]
+  update?: Prisma.ReceiptUpdateWithWhereUniqueWithoutUserInput | Prisma.ReceiptUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.ReceiptUpdateManyWithWhereWithoutUserInput | Prisma.ReceiptUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.ReceiptScalarWhereInput | Prisma.ReceiptScalarWhereInput[]
+}
+
+export type ReceiptUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.ReceiptCreateWithoutUserInput, Prisma.ReceiptUncheckedCreateWithoutUserInput> | Prisma.ReceiptCreateWithoutUserInput[] | Prisma.ReceiptUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ReceiptCreateOrConnectWithoutUserInput | Prisma.ReceiptCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.ReceiptUpsertWithWhereUniqueWithoutUserInput | Prisma.ReceiptUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.ReceiptCreateManyUserInputEnvelope
+  set?: Prisma.ReceiptWhereUniqueInput | Prisma.ReceiptWhereUniqueInput[]
+  disconnect?: Prisma.ReceiptWhereUniqueInput | Prisma.ReceiptWhereUniqueInput[]
+  delete?: Prisma.ReceiptWhereUniqueInput | Prisma.ReceiptWhereUniqueInput[]
+  connect?: Prisma.ReceiptWhereUniqueInput | Prisma.ReceiptWhereUniqueInput[]
+  update?: Prisma.ReceiptUpdateWithWhereUniqueWithoutUserInput | Prisma.ReceiptUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.ReceiptUpdateManyWithWhereWithoutUserInput | Prisma.ReceiptUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.ReceiptScalarWhereInput | Prisma.ReceiptScalarWhereInput[]
 }
 
 export type ReceiptCreateNestedManyWithoutFarmerInput = {
@@ -557,6 +629,75 @@ export type ReceiptUncheckedUpdateManyWithoutPaymentNestedInput = {
   deleteMany?: Prisma.ReceiptScalarWhereInput | Prisma.ReceiptScalarWhereInput[]
 }
 
+export type ReceiptCreateWithoutUserInput = {
+  id?: string
+  displayId: string
+  farmerName: string
+  amount: number
+  date: string
+  paidDate: string
+  method: string
+  note?: string
+  payment: Prisma.PaymentCreateNestedOneWithoutReceiptsInput
+  farmer: Prisma.FarmerCreateNestedOneWithoutReceiptsInput
+}
+
+export type ReceiptUncheckedCreateWithoutUserInput = {
+  id?: string
+  displayId: string
+  paymentId: string
+  farmerId: string
+  farmerName: string
+  amount: number
+  date: string
+  paidDate: string
+  method: string
+  note?: string
+}
+
+export type ReceiptCreateOrConnectWithoutUserInput = {
+  where: Prisma.ReceiptWhereUniqueInput
+  create: Prisma.XOR<Prisma.ReceiptCreateWithoutUserInput, Prisma.ReceiptUncheckedCreateWithoutUserInput>
+}
+
+export type ReceiptCreateManyUserInputEnvelope = {
+  data: Prisma.ReceiptCreateManyUserInput | Prisma.ReceiptCreateManyUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type ReceiptUpsertWithWhereUniqueWithoutUserInput = {
+  where: Prisma.ReceiptWhereUniqueInput
+  update: Prisma.XOR<Prisma.ReceiptUpdateWithoutUserInput, Prisma.ReceiptUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.ReceiptCreateWithoutUserInput, Prisma.ReceiptUncheckedCreateWithoutUserInput>
+}
+
+export type ReceiptUpdateWithWhereUniqueWithoutUserInput = {
+  where: Prisma.ReceiptWhereUniqueInput
+  data: Prisma.XOR<Prisma.ReceiptUpdateWithoutUserInput, Prisma.ReceiptUncheckedUpdateWithoutUserInput>
+}
+
+export type ReceiptUpdateManyWithWhereWithoutUserInput = {
+  where: Prisma.ReceiptScalarWhereInput
+  data: Prisma.XOR<Prisma.ReceiptUpdateManyMutationInput, Prisma.ReceiptUncheckedUpdateManyWithoutUserInput>
+}
+
+export type ReceiptScalarWhereInput = {
+  AND?: Prisma.ReceiptScalarWhereInput | Prisma.ReceiptScalarWhereInput[]
+  OR?: Prisma.ReceiptScalarWhereInput[]
+  NOT?: Prisma.ReceiptScalarWhereInput | Prisma.ReceiptScalarWhereInput[]
+  id?: Prisma.StringFilter<"Receipt"> | string
+  displayId?: Prisma.StringFilter<"Receipt"> | string
+  paymentId?: Prisma.StringFilter<"Receipt"> | string
+  farmerId?: Prisma.StringFilter<"Receipt"> | string
+  farmerName?: Prisma.StringFilter<"Receipt"> | string
+  amount?: Prisma.FloatFilter<"Receipt"> | number
+  date?: Prisma.StringFilter<"Receipt"> | string
+  paidDate?: Prisma.StringFilter<"Receipt"> | string
+  method?: Prisma.StringFilter<"Receipt"> | string
+  note?: Prisma.StringFilter<"Receipt"> | string
+  userId?: Prisma.StringFilter<"Receipt"> | string
+}
+
 export type ReceiptCreateWithoutFarmerInput = {
   id?: string
   displayId: string
@@ -567,6 +708,7 @@ export type ReceiptCreateWithoutFarmerInput = {
   method: string
   note?: string
   payment: Prisma.PaymentCreateNestedOneWithoutReceiptsInput
+  user: Prisma.UserCreateNestedOneWithoutReceiptsInput
 }
 
 export type ReceiptUncheckedCreateWithoutFarmerInput = {
@@ -579,6 +721,7 @@ export type ReceiptUncheckedCreateWithoutFarmerInput = {
   paidDate: string
   method: string
   note?: string
+  userId: string
 }
 
 export type ReceiptCreateOrConnectWithoutFarmerInput = {
@@ -607,22 +750,6 @@ export type ReceiptUpdateManyWithWhereWithoutFarmerInput = {
   data: Prisma.XOR<Prisma.ReceiptUpdateManyMutationInput, Prisma.ReceiptUncheckedUpdateManyWithoutFarmerInput>
 }
 
-export type ReceiptScalarWhereInput = {
-  AND?: Prisma.ReceiptScalarWhereInput | Prisma.ReceiptScalarWhereInput[]
-  OR?: Prisma.ReceiptScalarWhereInput[]
-  NOT?: Prisma.ReceiptScalarWhereInput | Prisma.ReceiptScalarWhereInput[]
-  id?: Prisma.StringFilter<"Receipt"> | string
-  displayId?: Prisma.StringFilter<"Receipt"> | string
-  paymentId?: Prisma.StringFilter<"Receipt"> | string
-  farmerId?: Prisma.StringFilter<"Receipt"> | string
-  farmerName?: Prisma.StringFilter<"Receipt"> | string
-  amount?: Prisma.FloatFilter<"Receipt"> | number
-  date?: Prisma.StringFilter<"Receipt"> | string
-  paidDate?: Prisma.StringFilter<"Receipt"> | string
-  method?: Prisma.StringFilter<"Receipt"> | string
-  note?: Prisma.StringFilter<"Receipt"> | string
-}
-
 export type ReceiptCreateWithoutPaymentInput = {
   id?: string
   displayId: string
@@ -633,6 +760,7 @@ export type ReceiptCreateWithoutPaymentInput = {
   method: string
   note?: string
   farmer: Prisma.FarmerCreateNestedOneWithoutReceiptsInput
+  user: Prisma.UserCreateNestedOneWithoutReceiptsInput
 }
 
 export type ReceiptUncheckedCreateWithoutPaymentInput = {
@@ -645,6 +773,7 @@ export type ReceiptUncheckedCreateWithoutPaymentInput = {
   paidDate: string
   method: string
   note?: string
+  userId: string
 }
 
 export type ReceiptCreateOrConnectWithoutPaymentInput = {
@@ -673,6 +802,58 @@ export type ReceiptUpdateManyWithWhereWithoutPaymentInput = {
   data: Prisma.XOR<Prisma.ReceiptUpdateManyMutationInput, Prisma.ReceiptUncheckedUpdateManyWithoutPaymentInput>
 }
 
+export type ReceiptCreateManyUserInput = {
+  id?: string
+  displayId: string
+  paymentId: string
+  farmerId: string
+  farmerName: string
+  amount: number
+  date: string
+  paidDate: string
+  method: string
+  note?: string
+}
+
+export type ReceiptUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  displayId?: Prisma.StringFieldUpdateOperationsInput | string
+  farmerName?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  date?: Prisma.StringFieldUpdateOperationsInput | string
+  paidDate?: Prisma.StringFieldUpdateOperationsInput | string
+  method?: Prisma.StringFieldUpdateOperationsInput | string
+  note?: Prisma.StringFieldUpdateOperationsInput | string
+  payment?: Prisma.PaymentUpdateOneRequiredWithoutReceiptsNestedInput
+  farmer?: Prisma.FarmerUpdateOneRequiredWithoutReceiptsNestedInput
+}
+
+export type ReceiptUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  displayId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentId?: Prisma.StringFieldUpdateOperationsInput | string
+  farmerId?: Prisma.StringFieldUpdateOperationsInput | string
+  farmerName?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  date?: Prisma.StringFieldUpdateOperationsInput | string
+  paidDate?: Prisma.StringFieldUpdateOperationsInput | string
+  method?: Prisma.StringFieldUpdateOperationsInput | string
+  note?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type ReceiptUncheckedUpdateManyWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  displayId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentId?: Prisma.StringFieldUpdateOperationsInput | string
+  farmerId?: Prisma.StringFieldUpdateOperationsInput | string
+  farmerName?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  date?: Prisma.StringFieldUpdateOperationsInput | string
+  paidDate?: Prisma.StringFieldUpdateOperationsInput | string
+  method?: Prisma.StringFieldUpdateOperationsInput | string
+  note?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
 export type ReceiptCreateManyFarmerInput = {
   id?: string
   displayId: string
@@ -683,6 +864,7 @@ export type ReceiptCreateManyFarmerInput = {
   paidDate: string
   method: string
   note?: string
+  userId: string
 }
 
 export type ReceiptUpdateWithoutFarmerInput = {
@@ -695,6 +877,7 @@ export type ReceiptUpdateWithoutFarmerInput = {
   method?: Prisma.StringFieldUpdateOperationsInput | string
   note?: Prisma.StringFieldUpdateOperationsInput | string
   payment?: Prisma.PaymentUpdateOneRequiredWithoutReceiptsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutReceiptsNestedInput
 }
 
 export type ReceiptUncheckedUpdateWithoutFarmerInput = {
@@ -707,6 +890,7 @@ export type ReceiptUncheckedUpdateWithoutFarmerInput = {
   paidDate?: Prisma.StringFieldUpdateOperationsInput | string
   method?: Prisma.StringFieldUpdateOperationsInput | string
   note?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ReceiptUncheckedUpdateManyWithoutFarmerInput = {
@@ -719,6 +903,7 @@ export type ReceiptUncheckedUpdateManyWithoutFarmerInput = {
   paidDate?: Prisma.StringFieldUpdateOperationsInput | string
   method?: Prisma.StringFieldUpdateOperationsInput | string
   note?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ReceiptCreateManyPaymentInput = {
@@ -731,6 +916,7 @@ export type ReceiptCreateManyPaymentInput = {
   paidDate: string
   method: string
   note?: string
+  userId: string
 }
 
 export type ReceiptUpdateWithoutPaymentInput = {
@@ -743,6 +929,7 @@ export type ReceiptUpdateWithoutPaymentInput = {
   method?: Prisma.StringFieldUpdateOperationsInput | string
   note?: Prisma.StringFieldUpdateOperationsInput | string
   farmer?: Prisma.FarmerUpdateOneRequiredWithoutReceiptsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutReceiptsNestedInput
 }
 
 export type ReceiptUncheckedUpdateWithoutPaymentInput = {
@@ -755,6 +942,7 @@ export type ReceiptUncheckedUpdateWithoutPaymentInput = {
   paidDate?: Prisma.StringFieldUpdateOperationsInput | string
   method?: Prisma.StringFieldUpdateOperationsInput | string
   note?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ReceiptUncheckedUpdateManyWithoutPaymentInput = {
@@ -767,6 +955,7 @@ export type ReceiptUncheckedUpdateManyWithoutPaymentInput = {
   paidDate?: Prisma.StringFieldUpdateOperationsInput | string
   method?: Prisma.StringFieldUpdateOperationsInput | string
   note?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -782,8 +971,10 @@ export type ReceiptSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   paidDate?: boolean
   method?: boolean
   note?: boolean
+  userId?: boolean
   payment?: boolean | Prisma.PaymentDefaultArgs<ExtArgs>
   farmer?: boolean | Prisma.FarmerDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["receipt"]>
 
 export type ReceiptSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -797,8 +988,10 @@ export type ReceiptSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   paidDate?: boolean
   method?: boolean
   note?: boolean
+  userId?: boolean
   payment?: boolean | Prisma.PaymentDefaultArgs<ExtArgs>
   farmer?: boolean | Prisma.FarmerDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["receipt"]>
 
 export type ReceiptSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -812,8 +1005,10 @@ export type ReceiptSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   paidDate?: boolean
   method?: boolean
   note?: boolean
+  userId?: boolean
   payment?: boolean | Prisma.PaymentDefaultArgs<ExtArgs>
   farmer?: boolean | Prisma.FarmerDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["receipt"]>
 
 export type ReceiptSelectScalar = {
@@ -827,20 +1022,24 @@ export type ReceiptSelectScalar = {
   paidDate?: boolean
   method?: boolean
   note?: boolean
+  userId?: boolean
 }
 
-export type ReceiptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "displayId" | "paymentId" | "farmerId" | "farmerName" | "amount" | "date" | "paidDate" | "method" | "note", ExtArgs["result"]["receipt"]>
+export type ReceiptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "displayId" | "paymentId" | "farmerId" | "farmerName" | "amount" | "date" | "paidDate" | "method" | "note" | "userId", ExtArgs["result"]["receipt"]>
 export type ReceiptInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   payment?: boolean | Prisma.PaymentDefaultArgs<ExtArgs>
   farmer?: boolean | Prisma.FarmerDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type ReceiptIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   payment?: boolean | Prisma.PaymentDefaultArgs<ExtArgs>
   farmer?: boolean | Prisma.FarmerDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type ReceiptIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   payment?: boolean | Prisma.PaymentDefaultArgs<ExtArgs>
   farmer?: boolean | Prisma.FarmerDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $ReceiptPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -848,6 +1047,7 @@ export type $ReceiptPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   objects: {
     payment: Prisma.$PaymentPayload<ExtArgs>
     farmer: Prisma.$FarmerPayload<ExtArgs>
+    user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -860,6 +1060,7 @@ export type $ReceiptPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     paidDate: string
     method: string
     note: string
+    userId: string
   }, ExtArgs["result"]["receipt"]>
   composites: {}
 }
@@ -1256,6 +1457,7 @@ export interface Prisma__ReceiptClient<T, Null = never, ExtArgs extends runtime.
   readonly [Symbol.toStringTag]: "PrismaPromise"
   payment<T extends Prisma.PaymentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaymentDefaultArgs<ExtArgs>>): Prisma.Prisma__PaymentClient<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   farmer<T extends Prisma.FarmerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FarmerDefaultArgs<ExtArgs>>): Prisma.Prisma__FarmerClient<runtime.Types.Result.GetResult<Prisma.$FarmerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1295,6 +1497,7 @@ export interface ReceiptFieldRefs {
   readonly paidDate: Prisma.FieldRef<"Receipt", 'String'>
   readonly method: Prisma.FieldRef<"Receipt", 'String'>
   readonly note: Prisma.FieldRef<"Receipt", 'String'>
+  readonly userId: Prisma.FieldRef<"Receipt", 'String'>
 }
     
 

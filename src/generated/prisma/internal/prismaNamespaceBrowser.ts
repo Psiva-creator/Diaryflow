@@ -85,6 +85,8 @@ export const UserScalarFieldEnum = {
   name: 'name',
   role: 'role',
   avatar: 'avatar',
+  dairyCode: 'dairyCode',
+  adminId: 'adminId',
   createdAt: 'createdAt'
 } as const
 
@@ -102,7 +104,8 @@ export const FarmerScalarFieldEnum = {
   includesSnf: 'includesSnf',
   status: 'status',
   joinDate: 'joinDate',
-  balance: 'balance'
+  balance: 'balance',
+  userId: 'userId'
 } as const
 
 export type FarmerScalarFieldEnum = (typeof FarmerScalarFieldEnum)[keyof typeof FarmerScalarFieldEnum]
@@ -117,7 +120,8 @@ export const CustomerScalarFieldEnum = {
   address: 'address',
   dailyQty: 'dailyQty',
   status: 'status',
-  balance: 'balance'
+  balance: 'balance',
+  userId: 'userId'
 } as const
 
 export type CustomerScalarFieldEnum = (typeof CustomerScalarFieldEnum)[keyof typeof CustomerScalarFieldEnum]
@@ -136,7 +140,8 @@ export const CollectionScalarFieldEnum = {
   snf: 'snf',
   rate: 'rate',
   amount: 'amount',
-  status: 'status'
+  status: 'status',
+  userId: 'userId'
 } as const
 
 export type CollectionScalarFieldEnum = (typeof CollectionScalarFieldEnum)[keyof typeof CollectionScalarFieldEnum]
@@ -151,7 +156,8 @@ export const PaymentScalarFieldEnum = {
   date: 'date',
   method: 'method',
   status: 'status',
-  note: 'note'
+  note: 'note',
+  userId: 'userId'
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
@@ -167,7 +173,8 @@ export const ReceiptScalarFieldEnum = {
   date: 'date',
   paidDate: 'paidDate',
   method: 'method',
-  note: 'note'
+  note: 'note',
+  userId: 'userId'
 } as const
 
 export type ReceiptScalarFieldEnum = (typeof ReceiptScalarFieldEnum)[keyof typeof ReceiptScalarFieldEnum]
@@ -181,7 +188,8 @@ export const TankScalarFieldEnum = {
   current: 'current',
   temp: 'temp',
   status: 'status',
-  lastCleaned: 'lastCleaned'
+  lastCleaned: 'lastCleaned',
+  userId: 'userId'
 } as const
 
 export type TankScalarFieldEnum = (typeof TankScalarFieldEnum)[keyof typeof TankScalarFieldEnum]

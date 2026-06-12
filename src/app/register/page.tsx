@@ -95,6 +95,26 @@ export default function RegisterPage() {
                 </div>
               </div>
 
+              {/* Dairy Invite Code */}
+              <div>
+                <label className="text-sm font-medium text-blue-200 block mb-1.5">
+                  Dairy Invite Code <span className="text-blue-400/60 text-xs font-normal">(Optional)</span>
+                </label>
+                <div className="relative">
+                  <Droplets className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400" />
+                  <input
+                    id="register-dairy-code"
+                    name="dairyCode"
+                    type="text"
+                    placeholder="Leave blank to create a new dairy"
+                    className="w-full pl-10 pr-4 py-3 bg-white/8 border border-white/15 rounded-xl text-white placeholder:text-blue-400/60 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all"
+                  />
+                </div>
+                <p className="text-xs text-blue-400/60 mt-1.5">
+                  If joining as staff, enter the Admin's Dairy Code.
+                </p>
+              </div>
+
               <button
                 id="register-submit-btn"
                 type="submit"

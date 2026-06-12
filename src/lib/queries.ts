@@ -12,9 +12,17 @@ const daysAgo = (n: number): string => {
   return d.toISOString().split('T')[0]
 }
 
+async function requireUserId(): Promise<string> {
+  const session = await getSession()
+  if (!session) throw new Error('Unauthorized')
+  return session.adminId || session.userId
+}
+
 // ── Farmers ──────────────────────────────────────────────────────────────────
 export async function getFarmers(): Promise<Farmer[]> {
+  const userId = await requireUserId()
   const farmers = await prisma.farmer.findMany({
+    where: { userId },
     orderBy: { displayId: 'asc' },
   })
   return farmers.map(f => ({
@@ -31,7 +39,9 @@ export async function getFarmers(): Promise<Farmer[]> {
 
 // ── Customers ────────────────────────────────────────────────────────────────
 export async function getCustomers(): Promise<Customer[]> {
+  const userId = await requireUserId()
   const customers = await prisma.customer.findMany({
+    where: { userId },
     orderBy: { displayId: 'asc' },
   })
   return customers.map(c => ({
@@ -48,7 +58,9 @@ export async function getCustomers(): Promise<Customer[]> {
 
 // ── Collections ──────────────────────────────────────────────────────────────
 export async function getCollections(): Promise<Collection[]> {
+  const userId = await requireUserId()
   const collections = await prisma.collection.findMany({
+    where: { userId },
     include: { farmer: { select: { displayId: true } } },
     orderBy: { displayId: 'asc' },
   })
@@ -70,7 +82,9 @@ export async function getCollections(): Promise<Collection[]> {
 
 // Resolve farmerId to displayId for collections
 export async function getCollectionsWithFarmerDisplayId(): Promise<Collection[]> {
+  const userId = await requireUserId()
   const collections = await prisma.collection.findMany({
+    where: { userId },
     include: { farmer: { select: { displayId: true } } },
     orderBy: { displayId: 'asc' },
   })
@@ -92,7 +106,9 @@ export async function getCollectionsWithFarmerDisplayId(): Promise<Collection[]>
 
 // ── Payments ─────────────────────────────────────────────────────────────────
 export async function getPayments(): Promise<Payment[]> {
+  const userId = await requireUserId()
   const payments = await prisma.payment.findMany({
+    where: { userId },
     include: { farmer: { select: { displayId: true } } },
     orderBy: { displayId: 'asc' },
   })
@@ -110,7 +126,9 @@ export async function getPayments(): Promise<Payment[]> {
 
 // ── Receipts ─────────────────────────────────────────────────────────────────
 export async function getReceipts(): Promise<Receipt[]> {
+  const userId = await requireUserId()
   const receipts = await prisma.receipt.findMany({
+    where: { userId },
     include: {
       farmer: { select: { displayId: true } },
       payment: { select: { displayId: true } },
@@ -132,7 +150,9 @@ export async function getReceipts(): Promise<Receipt[]> {
 
 // ── Tanks ────────────────────────────────────────────────────────────────────
 export async function getTanks(): Promise<Tank[]> {
+  const userId = await requireUserId()
   const tanks = await prisma.tank.findMany({
+    where: { userId },
     orderBy: { displayId: 'asc' },
   })
   return tanks.map(t => ({
@@ -167,12 +187,13 @@ export async function getNotifications(): Promise<Notification[]> {
 
 // ── Dashboard Analytics ──────────────────────────────────────────────────────
 export async function getDashboardData() {
+  const userId = await requireUserId()
   const today = todayStr()
 
   // Today's collections
   const todayCollections = await prisma.collection.findMany({
+    where: { userId, date: today },
     include: { farmer: { select: { displayId: true } } },
-    where: { date: today },
   })
 
   const totalMilkToday = todayCollections.reduce((s, c) => s + c.qty, 0)
@@ -180,21 +201,21 @@ export async function getDashboardData() {
 
   // Pending payments
   const pendingResult = await prisma.payment.aggregate({
-    where: { status: 'pending' },
+    where: { userId, status: 'pending' },
     _sum: { amount: true },
   })
   const pendingPayments = pendingResult._sum.amount ?? 0
 
   // Active farmers count
   const activeFarmers = await prisma.farmer.count({
-    where: { status: 'active' },
+    where: { userId, status: 'active' },
   })
 
   // Last 7 days
   const last7Days: DayData[] = []
   for (let i = 6; i >= 0; i--) {
     const d = daysAgo(i)
-    const cols = await prisma.collection.findMany({ where: { date: d } })
+    const cols = await prisma.collection.findMany({ where: { userId, date: d } })
     last7Days.push({
       date: d.slice(5),
       morning: cols.filter(c => c.shift === 'morning').reduce((s, c) => s + c.qty, 0),
@@ -206,6 +227,7 @@ export async function getDashboardData() {
 
   // Fat distribution
   const allCollections = await prisma.collection.findMany({
+    where: { userId },
     select: { fat: true },
   })
   const fatDist: FatDistEntry[] = [

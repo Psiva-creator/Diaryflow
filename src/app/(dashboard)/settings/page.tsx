@@ -14,7 +14,7 @@ const TAB_ICONS: Record<string, any> = {
 }
 
 export default function SettingsPage() {
-  const { theme, toggleTheme, useSNF, setUseSNF } = useApp()
+  const { theme, toggleTheme, useSNF, setUseSNF, user } = useApp()
   const [activeTab, setActiveTab] = useState('dairy')
   const [dairySettings, setDairy] = useState<Record<string, string>>({
     name: 'Sunshine Dairy Pvt Ltd',
@@ -92,7 +92,22 @@ export default function SettingsPage() {
                   <label className="text-sm font-medium text-[var(--color-muted)] block mb-1.5">Address</label>
                   <textarea id="dairy-address" rows={2} value={dairySettings.address} onChange={e=>setDairy({...dairySettings,address:e.target.value})} className="input-field resize-none" />
                 </div>
-                <button onClick={handleSave} className="btn-primary"><Save className="w-4 h-4" /> Save Changes</button>
+
+                {user.role === 'admin' && (
+                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 mt-6">
+                    <h3 className="font-bold text-blue-900 dark:text-blue-100 mb-1">Dairy Invite Code</h3>
+                    <p className="text-sm text-blue-700 dark:text-blue-300 mb-3">
+                      Share this code with your staff members when they create an account to link them to your dairy.
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <code className="px-4 py-2 bg-white dark:bg-slate-800 border border-blue-200 dark:border-blue-700 rounded-lg font-mono font-bold text-blue-600 dark:text-blue-400 select-all">
+                        {user.dairyCode || 'DEMO123'}
+                      </code>
+                    </div>
+                  </div>
+                )}
+
+                <button onClick={handleSave} className="btn-primary mt-4"><Save className="w-4 h-4" /> Save Changes</button>
               </div>
             )}
 

@@ -58,6 +58,7 @@ export type CollectionMinAggregateOutputType = {
   rate: number | null
   amount: number | null
   status: string | null
+  userId: string | null
 }
 
 export type CollectionMaxAggregateOutputType = {
@@ -74,6 +75,7 @@ export type CollectionMaxAggregateOutputType = {
   rate: number | null
   amount: number | null
   status: string | null
+  userId: string | null
 }
 
 export type CollectionCountAggregateOutputType = {
@@ -90,6 +92,7 @@ export type CollectionCountAggregateOutputType = {
   rate: number
   amount: number
   status: number
+  userId: number
   _all: number
 }
 
@@ -126,6 +129,7 @@ export type CollectionMinAggregateInputType = {
   rate?: true
   amount?: true
   status?: true
+  userId?: true
 }
 
 export type CollectionMaxAggregateInputType = {
@@ -142,6 +146,7 @@ export type CollectionMaxAggregateInputType = {
   rate?: true
   amount?: true
   status?: true
+  userId?: true
 }
 
 export type CollectionCountAggregateInputType = {
@@ -158,6 +163,7 @@ export type CollectionCountAggregateInputType = {
   rate?: true
   amount?: true
   status?: true
+  userId?: true
   _all?: true
 }
 
@@ -261,6 +267,7 @@ export type CollectionGroupByOutputType = {
   rate: number
   amount: number
   status: string
+  userId: string
   _count: CollectionCountAggregateOutputType | null
   _avg: CollectionAvgAggregateOutputType | null
   _sum: CollectionSumAggregateOutputType | null
@@ -300,7 +307,9 @@ export type CollectionWhereInput = {
   rate?: Prisma.FloatFilter<"Collection"> | number
   amount?: Prisma.FloatFilter<"Collection"> | number
   status?: Prisma.StringFilter<"Collection"> | string
+  userId?: Prisma.StringFilter<"Collection"> | string
   farmer?: Prisma.XOR<Prisma.FarmerScalarRelationFilter, Prisma.FarmerWhereInput>
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type CollectionOrderByWithRelationInput = {
@@ -317,15 +326,18 @@ export type CollectionOrderByWithRelationInput = {
   rate?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   farmer?: Prisma.FarmerOrderByWithRelationInput
+  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type CollectionWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  displayId?: string
+  userId_displayId?: Prisma.CollectionUserIdDisplayIdCompoundUniqueInput
   AND?: Prisma.CollectionWhereInput | Prisma.CollectionWhereInput[]
   OR?: Prisma.CollectionWhereInput[]
   NOT?: Prisma.CollectionWhereInput | Prisma.CollectionWhereInput[]
+  displayId?: Prisma.StringFilter<"Collection"> | string
   farmerId?: Prisma.StringFilter<"Collection"> | string
   farmerName?: Prisma.StringFilter<"Collection"> | string
   date?: Prisma.StringFilter<"Collection"> | string
@@ -337,8 +349,10 @@ export type CollectionWhereUniqueInput = Prisma.AtLeast<{
   rate?: Prisma.FloatFilter<"Collection"> | number
   amount?: Prisma.FloatFilter<"Collection"> | number
   status?: Prisma.StringFilter<"Collection"> | string
+  userId?: Prisma.StringFilter<"Collection"> | string
   farmer?: Prisma.XOR<Prisma.FarmerScalarRelationFilter, Prisma.FarmerWhereInput>
-}, "id" | "displayId">
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+}, "id" | "userId_displayId">
 
 export type CollectionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -354,6 +368,7 @@ export type CollectionOrderByWithAggregationInput = {
   rate?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   _count?: Prisma.CollectionCountOrderByAggregateInput
   _avg?: Prisma.CollectionAvgOrderByAggregateInput
   _max?: Prisma.CollectionMaxOrderByAggregateInput
@@ -378,6 +393,7 @@ export type CollectionScalarWhereWithAggregatesInput = {
   rate?: Prisma.FloatWithAggregatesFilter<"Collection"> | number
   amount?: Prisma.FloatWithAggregatesFilter<"Collection"> | number
   status?: Prisma.StringWithAggregatesFilter<"Collection"> | string
+  userId?: Prisma.StringWithAggregatesFilter<"Collection"> | string
 }
 
 export type CollectionCreateInput = {
@@ -394,6 +410,7 @@ export type CollectionCreateInput = {
   amount: number
   status?: string
   farmer: Prisma.FarmerCreateNestedOneWithoutCollectionsInput
+  user: Prisma.UserCreateNestedOneWithoutCollectionsInput
 }
 
 export type CollectionUncheckedCreateInput = {
@@ -410,6 +427,7 @@ export type CollectionUncheckedCreateInput = {
   rate: number
   amount: number
   status?: string
+  userId: string
 }
 
 export type CollectionUpdateInput = {
@@ -426,6 +444,7 @@ export type CollectionUpdateInput = {
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
   farmer?: Prisma.FarmerUpdateOneRequiredWithoutCollectionsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutCollectionsNestedInput
 }
 
 export type CollectionUncheckedUpdateInput = {
@@ -442,6 +461,7 @@ export type CollectionUncheckedUpdateInput = {
   rate?: Prisma.FloatFieldUpdateOperationsInput | number
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type CollectionCreateManyInput = {
@@ -458,6 +478,7 @@ export type CollectionCreateManyInput = {
   rate: number
   amount: number
   status?: string
+  userId: string
 }
 
 export type CollectionUpdateManyMutationInput = {
@@ -489,6 +510,7 @@ export type CollectionUncheckedUpdateManyInput = {
   rate?: Prisma.FloatFieldUpdateOperationsInput | number
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type CollectionListRelationFilter = {
@@ -499,6 +521,11 @@ export type CollectionListRelationFilter = {
 
 export type CollectionOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type CollectionUserIdDisplayIdCompoundUniqueInput = {
+  userId: string
+  displayId: string
 }
 
 export type CollectionCountOrderByAggregateInput = {
@@ -515,6 +542,7 @@ export type CollectionCountOrderByAggregateInput = {
   rate?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type CollectionAvgOrderByAggregateInput = {
@@ -540,6 +568,7 @@ export type CollectionMaxOrderByAggregateInput = {
   rate?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type CollectionMinOrderByAggregateInput = {
@@ -556,6 +585,7 @@ export type CollectionMinOrderByAggregateInput = {
   rate?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type CollectionSumOrderByAggregateInput = {
@@ -565,6 +595,48 @@ export type CollectionSumOrderByAggregateInput = {
   snf?: Prisma.SortOrder
   rate?: Prisma.SortOrder
   amount?: Prisma.SortOrder
+}
+
+export type CollectionCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.CollectionCreateWithoutUserInput, Prisma.CollectionUncheckedCreateWithoutUserInput> | Prisma.CollectionCreateWithoutUserInput[] | Prisma.CollectionUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.CollectionCreateOrConnectWithoutUserInput | Prisma.CollectionCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.CollectionCreateManyUserInputEnvelope
+  connect?: Prisma.CollectionWhereUniqueInput | Prisma.CollectionWhereUniqueInput[]
+}
+
+export type CollectionUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.CollectionCreateWithoutUserInput, Prisma.CollectionUncheckedCreateWithoutUserInput> | Prisma.CollectionCreateWithoutUserInput[] | Prisma.CollectionUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.CollectionCreateOrConnectWithoutUserInput | Prisma.CollectionCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.CollectionCreateManyUserInputEnvelope
+  connect?: Prisma.CollectionWhereUniqueInput | Prisma.CollectionWhereUniqueInput[]
+}
+
+export type CollectionUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.CollectionCreateWithoutUserInput, Prisma.CollectionUncheckedCreateWithoutUserInput> | Prisma.CollectionCreateWithoutUserInput[] | Prisma.CollectionUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.CollectionCreateOrConnectWithoutUserInput | Prisma.CollectionCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.CollectionUpsertWithWhereUniqueWithoutUserInput | Prisma.CollectionUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.CollectionCreateManyUserInputEnvelope
+  set?: Prisma.CollectionWhereUniqueInput | Prisma.CollectionWhereUniqueInput[]
+  disconnect?: Prisma.CollectionWhereUniqueInput | Prisma.CollectionWhereUniqueInput[]
+  delete?: Prisma.CollectionWhereUniqueInput | Prisma.CollectionWhereUniqueInput[]
+  connect?: Prisma.CollectionWhereUniqueInput | Prisma.CollectionWhereUniqueInput[]
+  update?: Prisma.CollectionUpdateWithWhereUniqueWithoutUserInput | Prisma.CollectionUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.CollectionUpdateManyWithWhereWithoutUserInput | Prisma.CollectionUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.CollectionScalarWhereInput | Prisma.CollectionScalarWhereInput[]
+}
+
+export type CollectionUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.CollectionCreateWithoutUserInput, Prisma.CollectionUncheckedCreateWithoutUserInput> | Prisma.CollectionCreateWithoutUserInput[] | Prisma.CollectionUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.CollectionCreateOrConnectWithoutUserInput | Prisma.CollectionCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.CollectionUpsertWithWhereUniqueWithoutUserInput | Prisma.CollectionUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.CollectionCreateManyUserInputEnvelope
+  set?: Prisma.CollectionWhereUniqueInput | Prisma.CollectionWhereUniqueInput[]
+  disconnect?: Prisma.CollectionWhereUniqueInput | Prisma.CollectionWhereUniqueInput[]
+  delete?: Prisma.CollectionWhereUniqueInput | Prisma.CollectionWhereUniqueInput[]
+  connect?: Prisma.CollectionWhereUniqueInput | Prisma.CollectionWhereUniqueInput[]
+  update?: Prisma.CollectionUpdateWithWhereUniqueWithoutUserInput | Prisma.CollectionUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.CollectionUpdateManyWithWhereWithoutUserInput | Prisma.CollectionUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.CollectionScalarWhereInput | Prisma.CollectionScalarWhereInput[]
 }
 
 export type CollectionCreateNestedManyWithoutFarmerInput = {
@@ -617,6 +689,84 @@ export type NullableFloatFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type CollectionCreateWithoutUserInput = {
+  id?: string
+  displayId: string
+  farmerName: string
+  date: string
+  shift: string
+  qty: number
+  fat: number
+  water?: number
+  snf?: number | null
+  rate: number
+  amount: number
+  status?: string
+  farmer: Prisma.FarmerCreateNestedOneWithoutCollectionsInput
+}
+
+export type CollectionUncheckedCreateWithoutUserInput = {
+  id?: string
+  displayId: string
+  farmerId: string
+  farmerName: string
+  date: string
+  shift: string
+  qty: number
+  fat: number
+  water?: number
+  snf?: number | null
+  rate: number
+  amount: number
+  status?: string
+}
+
+export type CollectionCreateOrConnectWithoutUserInput = {
+  where: Prisma.CollectionWhereUniqueInput
+  create: Prisma.XOR<Prisma.CollectionCreateWithoutUserInput, Prisma.CollectionUncheckedCreateWithoutUserInput>
+}
+
+export type CollectionCreateManyUserInputEnvelope = {
+  data: Prisma.CollectionCreateManyUserInput | Prisma.CollectionCreateManyUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type CollectionUpsertWithWhereUniqueWithoutUserInput = {
+  where: Prisma.CollectionWhereUniqueInput
+  update: Prisma.XOR<Prisma.CollectionUpdateWithoutUserInput, Prisma.CollectionUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.CollectionCreateWithoutUserInput, Prisma.CollectionUncheckedCreateWithoutUserInput>
+}
+
+export type CollectionUpdateWithWhereUniqueWithoutUserInput = {
+  where: Prisma.CollectionWhereUniqueInput
+  data: Prisma.XOR<Prisma.CollectionUpdateWithoutUserInput, Prisma.CollectionUncheckedUpdateWithoutUserInput>
+}
+
+export type CollectionUpdateManyWithWhereWithoutUserInput = {
+  where: Prisma.CollectionScalarWhereInput
+  data: Prisma.XOR<Prisma.CollectionUpdateManyMutationInput, Prisma.CollectionUncheckedUpdateManyWithoutUserInput>
+}
+
+export type CollectionScalarWhereInput = {
+  AND?: Prisma.CollectionScalarWhereInput | Prisma.CollectionScalarWhereInput[]
+  OR?: Prisma.CollectionScalarWhereInput[]
+  NOT?: Prisma.CollectionScalarWhereInput | Prisma.CollectionScalarWhereInput[]
+  id?: Prisma.StringFilter<"Collection"> | string
+  displayId?: Prisma.StringFilter<"Collection"> | string
+  farmerId?: Prisma.StringFilter<"Collection"> | string
+  farmerName?: Prisma.StringFilter<"Collection"> | string
+  date?: Prisma.StringFilter<"Collection"> | string
+  shift?: Prisma.StringFilter<"Collection"> | string
+  qty?: Prisma.FloatFilter<"Collection"> | number
+  fat?: Prisma.FloatFilter<"Collection"> | number
+  water?: Prisma.FloatFilter<"Collection"> | number
+  snf?: Prisma.FloatNullableFilter<"Collection"> | number | null
+  rate?: Prisma.FloatFilter<"Collection"> | number
+  amount?: Prisma.FloatFilter<"Collection"> | number
+  status?: Prisma.StringFilter<"Collection"> | string
+  userId?: Prisma.StringFilter<"Collection"> | string
+}
+
 export type CollectionCreateWithoutFarmerInput = {
   id?: string
   displayId: string
@@ -630,6 +780,7 @@ export type CollectionCreateWithoutFarmerInput = {
   rate: number
   amount: number
   status?: string
+  user: Prisma.UserCreateNestedOneWithoutCollectionsInput
 }
 
 export type CollectionUncheckedCreateWithoutFarmerInput = {
@@ -645,6 +796,7 @@ export type CollectionUncheckedCreateWithoutFarmerInput = {
   rate: number
   amount: number
   status?: string
+  userId: string
 }
 
 export type CollectionCreateOrConnectWithoutFarmerInput = {
@@ -673,23 +825,68 @@ export type CollectionUpdateManyWithWhereWithoutFarmerInput = {
   data: Prisma.XOR<Prisma.CollectionUpdateManyMutationInput, Prisma.CollectionUncheckedUpdateManyWithoutFarmerInput>
 }
 
-export type CollectionScalarWhereInput = {
-  AND?: Prisma.CollectionScalarWhereInput | Prisma.CollectionScalarWhereInput[]
-  OR?: Prisma.CollectionScalarWhereInput[]
-  NOT?: Prisma.CollectionScalarWhereInput | Prisma.CollectionScalarWhereInput[]
-  id?: Prisma.StringFilter<"Collection"> | string
-  displayId?: Prisma.StringFilter<"Collection"> | string
-  farmerId?: Prisma.StringFilter<"Collection"> | string
-  farmerName?: Prisma.StringFilter<"Collection"> | string
-  date?: Prisma.StringFilter<"Collection"> | string
-  shift?: Prisma.StringFilter<"Collection"> | string
-  qty?: Prisma.FloatFilter<"Collection"> | number
-  fat?: Prisma.FloatFilter<"Collection"> | number
-  water?: Prisma.FloatFilter<"Collection"> | number
-  snf?: Prisma.FloatNullableFilter<"Collection"> | number | null
-  rate?: Prisma.FloatFilter<"Collection"> | number
-  amount?: Prisma.FloatFilter<"Collection"> | number
-  status?: Prisma.StringFilter<"Collection"> | string
+export type CollectionCreateManyUserInput = {
+  id?: string
+  displayId: string
+  farmerId: string
+  farmerName: string
+  date: string
+  shift: string
+  qty: number
+  fat: number
+  water?: number
+  snf?: number | null
+  rate: number
+  amount: number
+  status?: string
+}
+
+export type CollectionUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  displayId?: Prisma.StringFieldUpdateOperationsInput | string
+  farmerName?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.StringFieldUpdateOperationsInput | string
+  shift?: Prisma.StringFieldUpdateOperationsInput | string
+  qty?: Prisma.FloatFieldUpdateOperationsInput | number
+  fat?: Prisma.FloatFieldUpdateOperationsInput | number
+  water?: Prisma.FloatFieldUpdateOperationsInput | number
+  snf?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  rate?: Prisma.FloatFieldUpdateOperationsInput | number
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  farmer?: Prisma.FarmerUpdateOneRequiredWithoutCollectionsNestedInput
+}
+
+export type CollectionUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  displayId?: Prisma.StringFieldUpdateOperationsInput | string
+  farmerId?: Prisma.StringFieldUpdateOperationsInput | string
+  farmerName?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.StringFieldUpdateOperationsInput | string
+  shift?: Prisma.StringFieldUpdateOperationsInput | string
+  qty?: Prisma.FloatFieldUpdateOperationsInput | number
+  fat?: Prisma.FloatFieldUpdateOperationsInput | number
+  water?: Prisma.FloatFieldUpdateOperationsInput | number
+  snf?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  rate?: Prisma.FloatFieldUpdateOperationsInput | number
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type CollectionUncheckedUpdateManyWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  displayId?: Prisma.StringFieldUpdateOperationsInput | string
+  farmerId?: Prisma.StringFieldUpdateOperationsInput | string
+  farmerName?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.StringFieldUpdateOperationsInput | string
+  shift?: Prisma.StringFieldUpdateOperationsInput | string
+  qty?: Prisma.FloatFieldUpdateOperationsInput | number
+  fat?: Prisma.FloatFieldUpdateOperationsInput | number
+  water?: Prisma.FloatFieldUpdateOperationsInput | number
+  snf?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  rate?: Prisma.FloatFieldUpdateOperationsInput | number
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type CollectionCreateManyFarmerInput = {
@@ -705,6 +902,7 @@ export type CollectionCreateManyFarmerInput = {
   rate: number
   amount: number
   status?: string
+  userId: string
 }
 
 export type CollectionUpdateWithoutFarmerInput = {
@@ -720,6 +918,7 @@ export type CollectionUpdateWithoutFarmerInput = {
   rate?: Prisma.FloatFieldUpdateOperationsInput | number
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  user?: Prisma.UserUpdateOneRequiredWithoutCollectionsNestedInput
 }
 
 export type CollectionUncheckedUpdateWithoutFarmerInput = {
@@ -735,6 +934,7 @@ export type CollectionUncheckedUpdateWithoutFarmerInput = {
   rate?: Prisma.FloatFieldUpdateOperationsInput | number
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type CollectionUncheckedUpdateManyWithoutFarmerInput = {
@@ -750,6 +950,7 @@ export type CollectionUncheckedUpdateManyWithoutFarmerInput = {
   rate?: Prisma.FloatFieldUpdateOperationsInput | number
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -768,7 +969,9 @@ export type CollectionSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   rate?: boolean
   amount?: boolean
   status?: boolean
+  userId?: boolean
   farmer?: boolean | Prisma.FarmerDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["collection"]>
 
 export type CollectionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -785,7 +988,9 @@ export type CollectionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   rate?: boolean
   amount?: boolean
   status?: boolean
+  userId?: boolean
   farmer?: boolean | Prisma.FarmerDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["collection"]>
 
 export type CollectionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -802,7 +1007,9 @@ export type CollectionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   rate?: boolean
   amount?: boolean
   status?: boolean
+  userId?: boolean
   farmer?: boolean | Prisma.FarmerDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["collection"]>
 
 export type CollectionSelectScalar = {
@@ -819,23 +1026,28 @@ export type CollectionSelectScalar = {
   rate?: boolean
   amount?: boolean
   status?: boolean
+  userId?: boolean
 }
 
-export type CollectionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "displayId" | "farmerId" | "farmerName" | "date" | "shift" | "qty" | "fat" | "water" | "snf" | "rate" | "amount" | "status", ExtArgs["result"]["collection"]>
+export type CollectionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "displayId" | "farmerId" | "farmerName" | "date" | "shift" | "qty" | "fat" | "water" | "snf" | "rate" | "amount" | "status" | "userId", ExtArgs["result"]["collection"]>
 export type CollectionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   farmer?: boolean | Prisma.FarmerDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type CollectionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   farmer?: boolean | Prisma.FarmerDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type CollectionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   farmer?: boolean | Prisma.FarmerDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $CollectionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Collection"
   objects: {
     farmer: Prisma.$FarmerPayload<ExtArgs>
+    user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -851,6 +1063,7 @@ export type $CollectionPayload<ExtArgs extends runtime.Types.Extensions.Internal
     rate: number
     amount: number
     status: string
+    userId: string
   }, ExtArgs["result"]["collection"]>
   composites: {}
 }
@@ -1246,6 +1459,7 @@ readonly fields: CollectionFieldRefs;
 export interface Prisma__CollectionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   farmer<T extends Prisma.FarmerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FarmerDefaultArgs<ExtArgs>>): Prisma.Prisma__FarmerClient<runtime.Types.Result.GetResult<Prisma.$FarmerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1288,6 +1502,7 @@ export interface CollectionFieldRefs {
   readonly rate: Prisma.FieldRef<"Collection", 'Float'>
   readonly amount: Prisma.FieldRef<"Collection", 'Float'>
   readonly status: Prisma.FieldRef<"Collection", 'String'>
+  readonly userId: Prisma.FieldRef<"Collection", 'String'>
 }
     
 

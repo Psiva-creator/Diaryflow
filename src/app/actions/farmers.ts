@@ -4,15 +4,20 @@ import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/db'
 import { farmerSchema } from '@/lib/schemas'
 import type { FarmerFormData } from '@/types'
+import { getSession } from '@/lib/session'
 
 export async function addFarmer(data: FarmerFormData) {
+  const session = await getSession()
+  if (!session) return { error: 'Unauthorized' }
+
   const parsed = farmerSchema.safeParse(data)
   if (!parsed.success) {
     return { error: parsed.error.flatten().fieldErrors }
   }
 
-  // Generate next display ID
+  // Generate next display ID scoped to this user
   const lastFarmer = await prisma.farmer.findFirst({
+    where: { userId: session.userId },
     orderBy: { displayId: 'desc' },
   })
   const lastNum = lastFarmer
@@ -34,6 +39,7 @@ export async function addFarmer(data: FarmerFormData) {
       status: 'active',
       joinDate: today,
       balance: 0,
+      userId: session.userId,
     },
   })
 
@@ -43,6 +49,9 @@ export async function addFarmer(data: FarmerFormData) {
 }
 
 export async function addFarmersBulk(rows: FarmerFormData[]) {
+  const session = await getSession()
+  if (!session) return { error: 'Unauthorized' }
+
   const validRows = rows.filter(r => {
     const parsed = farmerSchema.safeParse(r)
     return parsed.success
@@ -52,8 +61,9 @@ export async function addFarmersBulk(rows: FarmerFormData[]) {
     return { error: 'No valid entries found' }
   }
 
-  // Get the last display ID
+  // Get the last display ID for this user
   const lastFarmer = await prisma.farmer.findFirst({
+    where: { userId: session.userId },
     orderBy: { displayId: 'desc' },
   })
   let lastNum = lastFarmer
@@ -76,6 +86,7 @@ export async function addFarmersBulk(rows: FarmerFormData[]) {
         status: 'active',
         joinDate: today,
         balance: 0,
+        userId: session.userId,
       },
     })
   }
@@ -86,11 +97,16 @@ export async function addFarmersBulk(rows: FarmerFormData[]) {
 }
 
 export async function updateFarmer(displayId: string, data: Partial<FarmerFormData>) {
-  const farmer = await prisma.farmer.findUnique({ where: { displayId } })
+  const session = await getSession()
+  if (!session) return { error: 'Unauthorized' }
+
+  const farmer = await prisma.farmer.findFirst({
+    where: { displayId, userId: session.userId },
+  })
   if (!farmer) return { error: 'Farmer not found' }
 
   await prisma.farmer.update({
-    where: { displayId },
+    where: { id: farmer.id },
     data: {
       ...(data.name !== undefined && { name: data.name }),
       ...(data.village !== undefined && { village: data.village }),
@@ -106,10 +122,15 @@ export async function updateFarmer(displayId: string, data: Partial<FarmerFormDa
 }
 
 export async function deleteFarmer(displayId: string) {
-  const farmer = await prisma.farmer.findUnique({ where: { displayId } })
+  const session = await getSession()
+  if (!session) return { error: 'Unauthorized' }
+
+  const farmer = await prisma.farmer.findFirst({
+    where: { displayId, userId: session.userId },
+  })
   if (!farmer) return { error: 'Farmer not found' }
 
-  await prisma.farmer.delete({ where: { displayId } })
+  await prisma.farmer.delete({ where: { id: farmer.id } })
 
   revalidatePath('/farmers')
   revalidatePath('/dashboard')

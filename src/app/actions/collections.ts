@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/db'
 import { collectionSchema } from '@/lib/schemas'
 import { calcRate } from '@/lib/rateCalculator'
+import { getSession } from '@/lib/session'
 
 interface AddCollectionInput {
   farmerId: string       // display ID like "F001"
@@ -17,6 +18,9 @@ interface AddCollectionInput {
 }
 
 export async function addCollection(data: AddCollectionInput) {
+  const session = await getSession()
+  if (!session) return { error: 'Unauthorized' }
+
   const parsed = collectionSchema.safeParse({
     farmerId: data.farmerId,
     shift: data.shift,
@@ -31,9 +35,9 @@ export async function addCollection(data: AddCollectionInput) {
     return { error: parsed.error.flatten().fieldErrors }
   }
 
-  // Find farmer by display ID
-  const farmer = await prisma.farmer.findUnique({
-    where: { displayId: data.farmerId },
+  // Find farmer by display ID scoped to this user
+  const farmer = await prisma.farmer.findFirst({
+    where: { displayId: data.farmerId, userId: session.userId },
   })
   if (!farmer) return { error: 'Farmer not found' }
 
@@ -41,8 +45,9 @@ export async function addCollection(data: AddCollectionInput) {
   const rate = calcRate(data.fat, data.water, data.snf)
   const amount = Math.round(data.qty * rate * 100) / 100
 
-  // Generate next display ID
+  // Generate next display ID scoped to this user
   const lastCol = await prisma.collection.findFirst({
+    where: { userId: session.userId },
     orderBy: { displayId: 'desc' },
   })
   const lastNum = lastCol
@@ -67,6 +72,7 @@ export async function addCollection(data: AddCollectionInput) {
         rate,
         amount,
         status: 'accepted',
+        userId: session.userId,
       },
     })
 
@@ -76,9 +82,9 @@ export async function addCollection(data: AddCollectionInput) {
       data: { balance: { increment: amount } },
     })
 
-    // Assign to tank with most available capacity
+    // Assign to tank with most available capacity (scoped to user)
     const tanks = await tx.tank.findMany({
-      where: { status: 'operational' },
+      where: { userId: session.userId, status: 'operational' },
     })
     const candidates = tanks.filter(t => (t.current + data.qty) <= t.capacity)
     if (candidates.length > 0) {

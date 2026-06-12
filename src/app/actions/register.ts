@@ -18,6 +18,7 @@ export async function register(
     name: formData.get('name'),
     email: formData.get('email'),
     password: formData.get('password'),
+    dairyCode: formData.get('dairyCode') || undefined,
   }
 
   const parsed = registerSchema.safeParse(raw)
@@ -25,12 +26,25 @@ export async function register(
     return { error: parsed.error.issues[0]?.message || 'Invalid input' }
   }
 
-  const { name, email, password } = parsed.data
+  const { name, email, password, dairyCode } = parsed.data
 
   // Check if user already exists
   const existing = await prisma.user.findUnique({ where: { email } })
   if (existing) {
     return { error: 'An account with this email already exists. Please sign in.' }
+  }
+
+  let adminId = null
+  let role = 'admin'
+
+  // If a dairy code is provided, this user is joining as staff
+  if (dairyCode) {
+    const admin = await prisma.user.findUnique({ where: { dairyCode } })
+    if (!admin) {
+      return { error: 'Invalid Dairy Invite Code. Please check and try again.' }
+    }
+    adminId = admin.id
+    role = 'staff'
   }
 
   // Hash password and create account
@@ -41,7 +55,8 @@ export async function register(
       email,
       name,
       password: hashedPassword,
-      role: 'staff',
+      role,
+      adminId,
     },
   })
 

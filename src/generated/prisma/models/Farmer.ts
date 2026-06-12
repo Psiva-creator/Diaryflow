@@ -48,6 +48,7 @@ export type FarmerMinAggregateOutputType = {
   status: string | null
   joinDate: string | null
   balance: number | null
+  userId: string | null
 }
 
 export type FarmerMaxAggregateOutputType = {
@@ -62,6 +63,7 @@ export type FarmerMaxAggregateOutputType = {
   status: string | null
   joinDate: string | null
   balance: number | null
+  userId: string | null
 }
 
 export type FarmerCountAggregateOutputType = {
@@ -76,6 +78,7 @@ export type FarmerCountAggregateOutputType = {
   status: number
   joinDate: number
   balance: number
+  userId: number
   _all: number
 }
 
@@ -102,6 +105,7 @@ export type FarmerMinAggregateInputType = {
   status?: true
   joinDate?: true
   balance?: true
+  userId?: true
 }
 
 export type FarmerMaxAggregateInputType = {
@@ -116,6 +120,7 @@ export type FarmerMaxAggregateInputType = {
   status?: true
   joinDate?: true
   balance?: true
+  userId?: true
 }
 
 export type FarmerCountAggregateInputType = {
@@ -130,6 +135,7 @@ export type FarmerCountAggregateInputType = {
   status?: true
   joinDate?: true
   balance?: true
+  userId?: true
   _all?: true
 }
 
@@ -231,6 +237,7 @@ export type FarmerGroupByOutputType = {
   status: string
   joinDate: string
   balance: number
+  userId: string
   _count: FarmerCountAggregateOutputType | null
   _avg: FarmerAvgAggregateOutputType | null
   _sum: FarmerSumAggregateOutputType | null
@@ -268,6 +275,8 @@ export type FarmerWhereInput = {
   status?: Prisma.StringFilter<"Farmer"> | string
   joinDate?: Prisma.StringFilter<"Farmer"> | string
   balance?: Prisma.FloatFilter<"Farmer"> | number
+  userId?: Prisma.StringFilter<"Farmer"> | string
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   collections?: Prisma.CollectionListRelationFilter
   payments?: Prisma.PaymentListRelationFilter
   receipts?: Prisma.ReceiptListRelationFilter
@@ -285,6 +294,8 @@ export type FarmerOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   joinDate?: Prisma.SortOrder
   balance?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  user?: Prisma.UserOrderByWithRelationInput
   collections?: Prisma.CollectionOrderByRelationAggregateInput
   payments?: Prisma.PaymentOrderByRelationAggregateInput
   receipts?: Prisma.ReceiptOrderByRelationAggregateInput
@@ -292,10 +303,11 @@ export type FarmerOrderByWithRelationInput = {
 
 export type FarmerWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  displayId?: string
+  userId_displayId?: Prisma.FarmerUserIdDisplayIdCompoundUniqueInput
   AND?: Prisma.FarmerWhereInput | Prisma.FarmerWhereInput[]
   OR?: Prisma.FarmerWhereInput[]
   NOT?: Prisma.FarmerWhereInput | Prisma.FarmerWhereInput[]
+  displayId?: Prisma.StringFilter<"Farmer"> | string
   name?: Prisma.StringFilter<"Farmer"> | string
   village?: Prisma.StringFilter<"Farmer"> | string
   phone?: Prisma.StringFilter<"Farmer"> | string
@@ -305,10 +317,12 @@ export type FarmerWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.StringFilter<"Farmer"> | string
   joinDate?: Prisma.StringFilter<"Farmer"> | string
   balance?: Prisma.FloatFilter<"Farmer"> | number
+  userId?: Prisma.StringFilter<"Farmer"> | string
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   collections?: Prisma.CollectionListRelationFilter
   payments?: Prisma.PaymentListRelationFilter
   receipts?: Prisma.ReceiptListRelationFilter
-}, "id" | "displayId">
+}, "id" | "userId_displayId">
 
 export type FarmerOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -322,6 +336,7 @@ export type FarmerOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   joinDate?: Prisma.SortOrder
   balance?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   _count?: Prisma.FarmerCountOrderByAggregateInput
   _avg?: Prisma.FarmerAvgOrderByAggregateInput
   _max?: Prisma.FarmerMaxOrderByAggregateInput
@@ -344,6 +359,7 @@ export type FarmerScalarWhereWithAggregatesInput = {
   status?: Prisma.StringWithAggregatesFilter<"Farmer"> | string
   joinDate?: Prisma.StringWithAggregatesFilter<"Farmer"> | string
   balance?: Prisma.FloatWithAggregatesFilter<"Farmer"> | number
+  userId?: Prisma.StringWithAggregatesFilter<"Farmer"> | string
 }
 
 export type FarmerCreateInput = {
@@ -358,6 +374,7 @@ export type FarmerCreateInput = {
   status?: string
   joinDate: string
   balance?: number
+  user: Prisma.UserCreateNestedOneWithoutFarmersInput
   collections?: Prisma.CollectionCreateNestedManyWithoutFarmerInput
   payments?: Prisma.PaymentCreateNestedManyWithoutFarmerInput
   receipts?: Prisma.ReceiptCreateNestedManyWithoutFarmerInput
@@ -375,6 +392,7 @@ export type FarmerUncheckedCreateInput = {
   status?: string
   joinDate: string
   balance?: number
+  userId: string
   collections?: Prisma.CollectionUncheckedCreateNestedManyWithoutFarmerInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutFarmerInput
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutFarmerInput
@@ -392,6 +410,7 @@ export type FarmerUpdateInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   joinDate?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.FloatFieldUpdateOperationsInput | number
+  user?: Prisma.UserUpdateOneRequiredWithoutFarmersNestedInput
   collections?: Prisma.CollectionUpdateManyWithoutFarmerNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutFarmerNestedInput
   receipts?: Prisma.ReceiptUpdateManyWithoutFarmerNestedInput
@@ -409,6 +428,7 @@ export type FarmerUncheckedUpdateInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   joinDate?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.FloatFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   collections?: Prisma.CollectionUncheckedUpdateManyWithoutFarmerNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutFarmerNestedInput
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutFarmerNestedInput
@@ -426,6 +446,7 @@ export type FarmerCreateManyInput = {
   status?: string
   joinDate: string
   balance?: number
+  userId: string
 }
 
 export type FarmerUpdateManyMutationInput = {
@@ -454,6 +475,22 @@ export type FarmerUncheckedUpdateManyInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   joinDate?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.FloatFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type FarmerListRelationFilter = {
+  every?: Prisma.FarmerWhereInput
+  some?: Prisma.FarmerWhereInput
+  none?: Prisma.FarmerWhereInput
+}
+
+export type FarmerOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type FarmerUserIdDisplayIdCompoundUniqueInput = {
+  userId: string
+  displayId: string
 }
 
 export type FarmerCountOrderByAggregateInput = {
@@ -468,6 +505,7 @@ export type FarmerCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   joinDate?: Prisma.SortOrder
   balance?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type FarmerAvgOrderByAggregateInput = {
@@ -487,6 +525,7 @@ export type FarmerMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   joinDate?: Prisma.SortOrder
   balance?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type FarmerMinOrderByAggregateInput = {
@@ -501,6 +540,7 @@ export type FarmerMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   joinDate?: Prisma.SortOrder
   balance?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type FarmerSumOrderByAggregateInput = {
@@ -511,6 +551,48 @@ export type FarmerSumOrderByAggregateInput = {
 export type FarmerScalarRelationFilter = {
   is?: Prisma.FarmerWhereInput
   isNot?: Prisma.FarmerWhereInput
+}
+
+export type FarmerCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.FarmerCreateWithoutUserInput, Prisma.FarmerUncheckedCreateWithoutUserInput> | Prisma.FarmerCreateWithoutUserInput[] | Prisma.FarmerUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.FarmerCreateOrConnectWithoutUserInput | Prisma.FarmerCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.FarmerCreateManyUserInputEnvelope
+  connect?: Prisma.FarmerWhereUniqueInput | Prisma.FarmerWhereUniqueInput[]
+}
+
+export type FarmerUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.FarmerCreateWithoutUserInput, Prisma.FarmerUncheckedCreateWithoutUserInput> | Prisma.FarmerCreateWithoutUserInput[] | Prisma.FarmerUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.FarmerCreateOrConnectWithoutUserInput | Prisma.FarmerCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.FarmerCreateManyUserInputEnvelope
+  connect?: Prisma.FarmerWhereUniqueInput | Prisma.FarmerWhereUniqueInput[]
+}
+
+export type FarmerUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.FarmerCreateWithoutUserInput, Prisma.FarmerUncheckedCreateWithoutUserInput> | Prisma.FarmerCreateWithoutUserInput[] | Prisma.FarmerUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.FarmerCreateOrConnectWithoutUserInput | Prisma.FarmerCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.FarmerUpsertWithWhereUniqueWithoutUserInput | Prisma.FarmerUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.FarmerCreateManyUserInputEnvelope
+  set?: Prisma.FarmerWhereUniqueInput | Prisma.FarmerWhereUniqueInput[]
+  disconnect?: Prisma.FarmerWhereUniqueInput | Prisma.FarmerWhereUniqueInput[]
+  delete?: Prisma.FarmerWhereUniqueInput | Prisma.FarmerWhereUniqueInput[]
+  connect?: Prisma.FarmerWhereUniqueInput | Prisma.FarmerWhereUniqueInput[]
+  update?: Prisma.FarmerUpdateWithWhereUniqueWithoutUserInput | Prisma.FarmerUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.FarmerUpdateManyWithWhereWithoutUserInput | Prisma.FarmerUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.FarmerScalarWhereInput | Prisma.FarmerScalarWhereInput[]
+}
+
+export type FarmerUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.FarmerCreateWithoutUserInput, Prisma.FarmerUncheckedCreateWithoutUserInput> | Prisma.FarmerCreateWithoutUserInput[] | Prisma.FarmerUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.FarmerCreateOrConnectWithoutUserInput | Prisma.FarmerCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.FarmerUpsertWithWhereUniqueWithoutUserInput | Prisma.FarmerUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.FarmerCreateManyUserInputEnvelope
+  set?: Prisma.FarmerWhereUniqueInput | Prisma.FarmerWhereUniqueInput[]
+  disconnect?: Prisma.FarmerWhereUniqueInput | Prisma.FarmerWhereUniqueInput[]
+  delete?: Prisma.FarmerWhereUniqueInput | Prisma.FarmerWhereUniqueInput[]
+  connect?: Prisma.FarmerWhereUniqueInput | Prisma.FarmerWhereUniqueInput[]
+  update?: Prisma.FarmerUpdateWithWhereUniqueWithoutUserInput | Prisma.FarmerUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.FarmerUpdateManyWithWhereWithoutUserInput | Prisma.FarmerUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.FarmerScalarWhereInput | Prisma.FarmerScalarWhereInput[]
 }
 
 export type IntFieldUpdateOperationsInput = {
@@ -575,6 +657,84 @@ export type FarmerUpdateOneRequiredWithoutReceiptsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.FarmerUpdateToOneWithWhereWithoutReceiptsInput, Prisma.FarmerUpdateWithoutReceiptsInput>, Prisma.FarmerUncheckedUpdateWithoutReceiptsInput>
 }
 
+export type FarmerCreateWithoutUserInput = {
+  id?: string
+  displayId: string
+  name: string
+  village: string
+  phone: string
+  cattle?: number
+  customPricing?: boolean
+  includesSnf?: boolean
+  status?: string
+  joinDate: string
+  balance?: number
+  collections?: Prisma.CollectionCreateNestedManyWithoutFarmerInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutFarmerInput
+  receipts?: Prisma.ReceiptCreateNestedManyWithoutFarmerInput
+}
+
+export type FarmerUncheckedCreateWithoutUserInput = {
+  id?: string
+  displayId: string
+  name: string
+  village: string
+  phone: string
+  cattle?: number
+  customPricing?: boolean
+  includesSnf?: boolean
+  status?: string
+  joinDate: string
+  balance?: number
+  collections?: Prisma.CollectionUncheckedCreateNestedManyWithoutFarmerInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutFarmerInput
+  receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutFarmerInput
+}
+
+export type FarmerCreateOrConnectWithoutUserInput = {
+  where: Prisma.FarmerWhereUniqueInput
+  create: Prisma.XOR<Prisma.FarmerCreateWithoutUserInput, Prisma.FarmerUncheckedCreateWithoutUserInput>
+}
+
+export type FarmerCreateManyUserInputEnvelope = {
+  data: Prisma.FarmerCreateManyUserInput | Prisma.FarmerCreateManyUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type FarmerUpsertWithWhereUniqueWithoutUserInput = {
+  where: Prisma.FarmerWhereUniqueInput
+  update: Prisma.XOR<Prisma.FarmerUpdateWithoutUserInput, Prisma.FarmerUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.FarmerCreateWithoutUserInput, Prisma.FarmerUncheckedCreateWithoutUserInput>
+}
+
+export type FarmerUpdateWithWhereUniqueWithoutUserInput = {
+  where: Prisma.FarmerWhereUniqueInput
+  data: Prisma.XOR<Prisma.FarmerUpdateWithoutUserInput, Prisma.FarmerUncheckedUpdateWithoutUserInput>
+}
+
+export type FarmerUpdateManyWithWhereWithoutUserInput = {
+  where: Prisma.FarmerScalarWhereInput
+  data: Prisma.XOR<Prisma.FarmerUpdateManyMutationInput, Prisma.FarmerUncheckedUpdateManyWithoutUserInput>
+}
+
+export type FarmerScalarWhereInput = {
+  AND?: Prisma.FarmerScalarWhereInput | Prisma.FarmerScalarWhereInput[]
+  OR?: Prisma.FarmerScalarWhereInput[]
+  NOT?: Prisma.FarmerScalarWhereInput | Prisma.FarmerScalarWhereInput[]
+  id?: Prisma.StringFilter<"Farmer"> | string
+  displayId?: Prisma.StringFilter<"Farmer"> | string
+  name?: Prisma.StringFilter<"Farmer"> | string
+  village?: Prisma.StringFilter<"Farmer"> | string
+  phone?: Prisma.StringFilter<"Farmer"> | string
+  cattle?: Prisma.IntFilter<"Farmer"> | number
+  customPricing?: Prisma.BoolFilter<"Farmer"> | boolean
+  includesSnf?: Prisma.BoolFilter<"Farmer"> | boolean
+  status?: Prisma.StringFilter<"Farmer"> | string
+  joinDate?: Prisma.StringFilter<"Farmer"> | string
+  balance?: Prisma.FloatFilter<"Farmer"> | number
+  userId?: Prisma.StringFilter<"Farmer"> | string
+}
+
 export type FarmerCreateWithoutCollectionsInput = {
   id?: string
   displayId: string
@@ -587,6 +747,7 @@ export type FarmerCreateWithoutCollectionsInput = {
   status?: string
   joinDate: string
   balance?: number
+  user: Prisma.UserCreateNestedOneWithoutFarmersInput
   payments?: Prisma.PaymentCreateNestedManyWithoutFarmerInput
   receipts?: Prisma.ReceiptCreateNestedManyWithoutFarmerInput
 }
@@ -603,6 +764,7 @@ export type FarmerUncheckedCreateWithoutCollectionsInput = {
   status?: string
   joinDate: string
   balance?: number
+  userId: string
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutFarmerInput
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutFarmerInput
 }
@@ -635,6 +797,7 @@ export type FarmerUpdateWithoutCollectionsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   joinDate?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.FloatFieldUpdateOperationsInput | number
+  user?: Prisma.UserUpdateOneRequiredWithoutFarmersNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutFarmerNestedInput
   receipts?: Prisma.ReceiptUpdateManyWithoutFarmerNestedInput
 }
@@ -651,6 +814,7 @@ export type FarmerUncheckedUpdateWithoutCollectionsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   joinDate?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.FloatFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutFarmerNestedInput
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutFarmerNestedInput
 }
@@ -667,6 +831,7 @@ export type FarmerCreateWithoutPaymentsInput = {
   status?: string
   joinDate: string
   balance?: number
+  user: Prisma.UserCreateNestedOneWithoutFarmersInput
   collections?: Prisma.CollectionCreateNestedManyWithoutFarmerInput
   receipts?: Prisma.ReceiptCreateNestedManyWithoutFarmerInput
 }
@@ -683,6 +848,7 @@ export type FarmerUncheckedCreateWithoutPaymentsInput = {
   status?: string
   joinDate: string
   balance?: number
+  userId: string
   collections?: Prisma.CollectionUncheckedCreateNestedManyWithoutFarmerInput
   receipts?: Prisma.ReceiptUncheckedCreateNestedManyWithoutFarmerInput
 }
@@ -715,6 +881,7 @@ export type FarmerUpdateWithoutPaymentsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   joinDate?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.FloatFieldUpdateOperationsInput | number
+  user?: Prisma.UserUpdateOneRequiredWithoutFarmersNestedInput
   collections?: Prisma.CollectionUpdateManyWithoutFarmerNestedInput
   receipts?: Prisma.ReceiptUpdateManyWithoutFarmerNestedInput
 }
@@ -731,6 +898,7 @@ export type FarmerUncheckedUpdateWithoutPaymentsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   joinDate?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.FloatFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   collections?: Prisma.CollectionUncheckedUpdateManyWithoutFarmerNestedInput
   receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutFarmerNestedInput
 }
@@ -747,6 +915,7 @@ export type FarmerCreateWithoutReceiptsInput = {
   status?: string
   joinDate: string
   balance?: number
+  user: Prisma.UserCreateNestedOneWithoutFarmersInput
   collections?: Prisma.CollectionCreateNestedManyWithoutFarmerInput
   payments?: Prisma.PaymentCreateNestedManyWithoutFarmerInput
 }
@@ -763,6 +932,7 @@ export type FarmerUncheckedCreateWithoutReceiptsInput = {
   status?: string
   joinDate: string
   balance?: number
+  userId: string
   collections?: Prisma.CollectionUncheckedCreateNestedManyWithoutFarmerInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutFarmerInput
 }
@@ -795,6 +965,7 @@ export type FarmerUpdateWithoutReceiptsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   joinDate?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.FloatFieldUpdateOperationsInput | number
+  user?: Prisma.UserUpdateOneRequiredWithoutFarmersNestedInput
   collections?: Prisma.CollectionUpdateManyWithoutFarmerNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutFarmerNestedInput
 }
@@ -811,8 +982,71 @@ export type FarmerUncheckedUpdateWithoutReceiptsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   joinDate?: Prisma.StringFieldUpdateOperationsInput | string
   balance?: Prisma.FloatFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   collections?: Prisma.CollectionUncheckedUpdateManyWithoutFarmerNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutFarmerNestedInput
+}
+
+export type FarmerCreateManyUserInput = {
+  id?: string
+  displayId: string
+  name: string
+  village: string
+  phone: string
+  cattle?: number
+  customPricing?: boolean
+  includesSnf?: boolean
+  status?: string
+  joinDate: string
+  balance?: number
+}
+
+export type FarmerUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  displayId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  village?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  cattle?: Prisma.IntFieldUpdateOperationsInput | number
+  customPricing?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  includesSnf?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  joinDate?: Prisma.StringFieldUpdateOperationsInput | string
+  balance?: Prisma.FloatFieldUpdateOperationsInput | number
+  collections?: Prisma.CollectionUpdateManyWithoutFarmerNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutFarmerNestedInput
+  receipts?: Prisma.ReceiptUpdateManyWithoutFarmerNestedInput
+}
+
+export type FarmerUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  displayId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  village?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  cattle?: Prisma.IntFieldUpdateOperationsInput | number
+  customPricing?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  includesSnf?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  joinDate?: Prisma.StringFieldUpdateOperationsInput | string
+  balance?: Prisma.FloatFieldUpdateOperationsInput | number
+  collections?: Prisma.CollectionUncheckedUpdateManyWithoutFarmerNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutFarmerNestedInput
+  receipts?: Prisma.ReceiptUncheckedUpdateManyWithoutFarmerNestedInput
+}
+
+export type FarmerUncheckedUpdateManyWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  displayId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  village?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  cattle?: Prisma.IntFieldUpdateOperationsInput | number
+  customPricing?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  includesSnf?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  joinDate?: Prisma.StringFieldUpdateOperationsInput | string
+  balance?: Prisma.FloatFieldUpdateOperationsInput | number
 }
 
 
@@ -876,6 +1110,8 @@ export type FarmerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   status?: boolean
   joinDate?: boolean
   balance?: boolean
+  userId?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   collections?: boolean | Prisma.Farmer$collectionsArgs<ExtArgs>
   payments?: boolean | Prisma.Farmer$paymentsArgs<ExtArgs>
   receipts?: boolean | Prisma.Farmer$receiptsArgs<ExtArgs>
@@ -894,6 +1130,8 @@ export type FarmerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   status?: boolean
   joinDate?: boolean
   balance?: boolean
+  userId?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["farmer"]>
 
 export type FarmerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -908,6 +1146,8 @@ export type FarmerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   status?: boolean
   joinDate?: boolean
   balance?: boolean
+  userId?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["farmer"]>
 
 export type FarmerSelectScalar = {
@@ -922,21 +1162,28 @@ export type FarmerSelectScalar = {
   status?: boolean
   joinDate?: boolean
   balance?: boolean
+  userId?: boolean
 }
 
-export type FarmerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "displayId" | "name" | "village" | "phone" | "cattle" | "customPricing" | "includesSnf" | "status" | "joinDate" | "balance", ExtArgs["result"]["farmer"]>
+export type FarmerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "displayId" | "name" | "village" | "phone" | "cattle" | "customPricing" | "includesSnf" | "status" | "joinDate" | "balance" | "userId", ExtArgs["result"]["farmer"]>
 export type FarmerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   collections?: boolean | Prisma.Farmer$collectionsArgs<ExtArgs>
   payments?: boolean | Prisma.Farmer$paymentsArgs<ExtArgs>
   receipts?: boolean | Prisma.Farmer$receiptsArgs<ExtArgs>
   _count?: boolean | Prisma.FarmerCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type FarmerIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type FarmerIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type FarmerIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type FarmerIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
 
 export type $FarmerPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Farmer"
   objects: {
+    user: Prisma.$UserPayload<ExtArgs>
     collections: Prisma.$CollectionPayload<ExtArgs>[]
     payments: Prisma.$PaymentPayload<ExtArgs>[]
     receipts: Prisma.$ReceiptPayload<ExtArgs>[]
@@ -953,6 +1200,7 @@ export type $FarmerPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     status: string
     joinDate: string
     balance: number
+    userId: string
   }, ExtArgs["result"]["farmer"]>
   composites: {}
 }
@@ -1347,6 +1595,7 @@ readonly fields: FarmerFieldRefs;
  */
 export interface Prisma__FarmerClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   collections<T extends Prisma.Farmer$collectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farmer$collectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CollectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   payments<T extends Prisma.Farmer$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farmer$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   receipts<T extends Prisma.Farmer$receiptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Farmer$receiptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReceiptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1390,6 +1639,7 @@ export interface FarmerFieldRefs {
   readonly status: Prisma.FieldRef<"Farmer", 'String'>
   readonly joinDate: Prisma.FieldRef<"Farmer", 'String'>
   readonly balance: Prisma.FieldRef<"Farmer", 'Float'>
+  readonly userId: Prisma.FieldRef<"Farmer", 'String'>
 }
     
 
@@ -1644,6 +1894,10 @@ export type FarmerCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    */
   data: Prisma.FarmerCreateManyInput | Prisma.FarmerCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FarmerIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1714,6 +1968,10 @@ export type FarmerUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    * Limit how many Farmers to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FarmerIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

@@ -34,6 +34,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
       name: session.name,
       role: session.role as 'admin' | 'staff',
       avatar: session.avatar,
+      dairyCode: session.dairyCode,
     },
     farmers,
     customers,

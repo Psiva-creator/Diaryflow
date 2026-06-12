@@ -27,8 +27,30 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
           name: user.name,
           role: user.role,
           avatar: user.avatar,
+          dairyCode: user.dairyCode,
+          adminId: user.adminId,
         }
       },
     }),
   ],
+  callbacks: {
+    jwt({ token, user }) {
+      if (user) {
+        token.role = (user as any).role
+        token.avatar = (user as any).avatar
+        token.dairyCode = (user as any).dairyCode
+        token.adminId = (user as any).adminId
+      }
+      return token
+    },
+    session({ session, token }) {
+      if (token) {
+        ;(session.user as any).role = token.role
+        ;(session.user as any).avatar = token.avatar
+        ;(session.user as any).dairyCode = token.dairyCode
+        ;(session.user as any).adminId = token.adminId
+      }
+      return session
+    },
+  },
 })

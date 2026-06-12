@@ -40,12 +40,13 @@ async function main() {
       name: 'Admin User',
       role: 'admin',
       avatar: 'AU',
+      dairyCode: 'DEMO123',
     },
   })
 
   const staff = await prisma.user.upsert({
     where: { email: 'staff@dairy.com' },
-    update: { pin: staffPin },
+    update: { pin: staffPin, adminId: admin.id },
     create: {
       email: 'staff@dairy.com',
       password: staffPw,
@@ -53,12 +54,13 @@ async function main() {
       name: 'Staff Member',
       role: 'staff',
       avatar: 'SM',
+      adminId: admin.id,
     },
   })
 
   console.log('  ✅ Users created (with PINs)')
 
-  // ── Farmers ────────────────────────────────────────────────────────────────
+  // ── Farmers (assigned to admin user) ───────────────────────────────────────
   const farmerData = [
     { displayId: 'F001', name: 'Arjun Singh',  village: 'Sundarpur', phone: '9876543210', cattle: 6,  joinDate: '2023-01-15' },
     { displayId: 'F002', name: 'Deepak Kumar', village: 'Ramnagar',  phone: '9812345678', cattle: 4,  joinDate: '2023-03-22' },
@@ -74,16 +76,22 @@ async function main() {
 
   const farmers = []
   for (const f of farmerData) {
-    const farmer = await prisma.farmer.upsert({
-      where: { displayId: f.displayId },
-      update: {},
-      create: { ...f, status: 'active', balance: 0 },
+    // Check if farmer already exists for this user
+    const existing = await prisma.farmer.findFirst({
+      where: { userId: admin.id, displayId: f.displayId },
+    })
+    if (existing) {
+      farmers.push(existing)
+      continue
+    }
+    const farmer = await prisma.farmer.create({
+      data: { ...f, status: 'active', balance: 0, userId: admin.id },
     })
     farmers.push(farmer)
   }
   console.log('  ✅ 10 Farmers created')
 
-  // ── Collections (30 days × 10 farmers) ──────────────────────────────────────
+  // ── Collections (30 days × 10 farmers, assigned to admin) ──────────────────
   let colCounter = 1
   const collectionRecords = []
 
@@ -112,6 +120,7 @@ async function main() {
         rate: Math.round(morningRate * 100) / 100,
         amount: Math.round(morningAmount * 100) / 100,
         status: 'accepted',
+        userId: admin.id,
       })
 
       // Evening shift (90% chance)
@@ -134,6 +143,7 @@ async function main() {
           rate: Math.round(eveningRate * 100) / 100,
           amount: Math.round(eveningAmount * 100) / 100,
           status: 'accepted',
+          userId: admin.id,
         })
       }
     }
@@ -155,66 +165,82 @@ async function main() {
   }
   console.log('  ✅ Farmer balances updated')
 
-  // ── Customers ──────────────────────────────────────────────────────────────
-  await prisma.customer.upsert({
-    where: { displayId: 'C001' },
-    update: {},
-    create: {
-      displayId: 'C001',
-      name: 'Anand Stores',
-      type: 'retail',
-      phone: '9911223344',
-      address: 'MG Road, City',
-      dailyQty: 20,
-      status: 'active',
-      balance: 0,
-    },
+  // ── Customers (assigned to admin) ──────────────────────────────────────────
+  const existingC1 = await prisma.customer.findFirst({
+    where: { userId: admin.id, displayId: 'C001' },
   })
+  if (!existingC1) {
+    await prisma.customer.create({
+      data: {
+        displayId: 'C001',
+        name: 'Anand Stores',
+        type: 'retail',
+        phone: '9911223344',
+        address: 'MG Road, City',
+        dailyQty: 20,
+        status: 'active',
+        balance: 0,
+        userId: admin.id,
+      },
+    })
+  }
 
-  await prisma.customer.upsert({
-    where: { displayId: 'C002' },
-    update: {},
-    create: {
-      displayId: 'C002',
-      name: 'City Hotel',
-      type: 'bulk',
-      phone: '9922334455',
-      address: 'Hotel Lane, City',
-      dailyQty: 80,
-      status: 'active',
-      balance: 0,
-    },
+  const existingC2 = await prisma.customer.findFirst({
+    where: { userId: admin.id, displayId: 'C002' },
   })
+  if (!existingC2) {
+    await prisma.customer.create({
+      data: {
+        displayId: 'C002',
+        name: 'City Hotel',
+        type: 'bulk',
+        phone: '9922334455',
+        address: 'Hotel Lane, City',
+        dailyQty: 80,
+        status: 'active',
+        balance: 0,
+        userId: admin.id,
+      },
+    })
+  }
   console.log('  ✅ 2 Customers created')
 
-  // ── Tanks ──────────────────────────────────────────────────────────────────
-  await prisma.tank.upsert({
-    where: { displayId: 'T001' },
-    update: {},
-    create: {
-      displayId: 'T001',
-      name: 'Main Tank',
-      capacity: 10000,
-      current: 4500,
-      temp: 4.0,
-      status: 'operational',
-      lastCleaned: daysAgo(1),
-    },
+  // ── Tanks (assigned to admin) ──────────────────────────────────────────────
+  const existingT1 = await prisma.tank.findFirst({
+    where: { userId: admin.id, displayId: 'T001' },
   })
+  if (!existingT1) {
+    await prisma.tank.create({
+      data: {
+        displayId: 'T001',
+        name: 'Main Tank',
+        capacity: 10000,
+        current: 4500,
+        temp: 4.0,
+        status: 'operational',
+        lastCleaned: daysAgo(1),
+        userId: admin.id,
+      },
+    })
+  }
 
-  await prisma.tank.upsert({
-    where: { displayId: 'T002' },
-    update: {},
-    create: {
-      displayId: 'T002',
-      name: 'Buffer A',
-      capacity: 2000,
-      current: 800,
-      temp: 4.2,
-      status: 'operational',
-      lastCleaned: daysAgo(3),
-    },
+  const existingT2 = await prisma.tank.findFirst({
+    where: { userId: admin.id, displayId: 'T002' },
   })
+  if (!existingT2) {
+    await prisma.tank.create({
+      data: {
+        displayId: 'T002',
+        name: 'Buffer A',
+        capacity: 2000,
+        current: 800,
+        temp: 4.2,
+        status: 'operational',
+        lastCleaned: daysAgo(3),
+        userId: admin.id,
+      },
+    })
+  }
   console.log('  ✅ 2 Tanks created')
 
   // ── Notifications ──────────────────────────────────────────────────────────

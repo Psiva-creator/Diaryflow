@@ -4,14 +4,19 @@ import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/db'
 import { customerSchema } from '@/lib/schemas'
 import type { CustomerFormData } from '@/types'
+import { getSession } from '@/lib/session'
 
 export async function addCustomer(data: CustomerFormData) {
+  const session = await getSession()
+  if (!session) return { error: 'Unauthorized' }
+
   const parsed = customerSchema.safeParse(data)
   if (!parsed.success) {
     return { error: parsed.error.flatten().fieldErrors }
   }
 
   const lastCustomer = await prisma.customer.findFirst({
+    where: { userId: session.userId },
     orderBy: { displayId: 'desc' },
   })
   const lastNum = lastCustomer
@@ -29,6 +34,7 @@ export async function addCustomer(data: CustomerFormData) {
       dailyQty: parsed.data.dailyQty,
       status: 'active',
       balance: 0,
+      userId: session.userId,
     },
   })
 
@@ -37,11 +43,16 @@ export async function addCustomer(data: CustomerFormData) {
 }
 
 export async function updateCustomer(displayId: string, data: Partial<CustomerFormData>) {
-  const customer = await prisma.customer.findUnique({ where: { displayId } })
+  const session = await getSession()
+  if (!session) return { error: 'Unauthorized' }
+
+  const customer = await prisma.customer.findFirst({
+    where: { displayId, userId: session.userId },
+  })
   if (!customer) return { error: 'Customer not found' }
 
   await prisma.customer.update({
-    where: { displayId },
+    where: { id: customer.id },
     data: {
       ...(data.name !== undefined && { name: data.name }),
       ...(data.type !== undefined && { type: data.type }),
@@ -56,10 +67,15 @@ export async function updateCustomer(displayId: string, data: Partial<CustomerFo
 }
 
 export async function deleteCustomer(displayId: string) {
-  const customer = await prisma.customer.findUnique({ where: { displayId } })
+  const session = await getSession()
+  if (!session) return { error: 'Unauthorized' }
+
+  const customer = await prisma.customer.findFirst({
+    where: { displayId, userId: session.userId },
+  })
   if (!customer) return { error: 'Customer not found' }
 
-  await prisma.customer.delete({ where: { displayId } })
+  await prisma.customer.delete({ where: { id: customer.id } })
 
   revalidatePath('/customers')
   return { success: true }
