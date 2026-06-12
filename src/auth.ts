@@ -38,6 +38,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
       if (user) {
         token.id = user.id
         token.role = (user as any).role
+        token.name = user.name
         token.avatar = (user as any).avatar
         token.dairyCode = (user as any).dairyCode
         token.adminId = (user as any).adminId
@@ -45,8 +46,9 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
       return token
     },
     session({ session, token }) {
-      if (token) {
+      if (token && session.user) {
         session.user.id = token.id as string
+        session.user.name = token.name as string
         ;(session.user as any).role = token.role
         ;(session.user as any).avatar = token.avatar
         ;(session.user as any).dairyCode = token.dairyCode
