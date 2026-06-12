@@ -1,16 +1,20 @@
 'use client'
-import { useState, useActionState } from 'react'
+import { useState, useActionState, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { Droplets, Eye, EyeOff, Lock, Mail, ArrowRight, Shield } from 'lucide-react'
+import { Droplets, Eye, EyeOff, Lock, Mail, ArrowRight, Shield, UserPlus } from 'lucide-react'
 import { Toaster } from 'react-hot-toast'
+import Link from 'next/link'
 import { login, type LoginState } from '@/app/actions/auth'
 
-export default function LoginPage() {
+function LoginContent() {
   const [state, formAction, pending] = useActionState<LoginState, FormData>(login, undefined)
   const [showPw, setShowPw] = useState(false)
   const [tab, setTab] = useState('admin')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const searchParams = useSearchParams()
+  const justRegistered = searchParams.get('registered') === 'true'
 
   const autofill = (role: string) => {
     if (role === 'admin') {
@@ -62,6 +66,13 @@ export default function LoginPage() {
                 </button>
               ))}
             </div>
+
+            {/* Success message after registration */}
+            {justRegistered && (
+              <div className="mb-4 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-emerald-300 text-sm text-center">
+                ✅ Account created successfully! Sign in with your credentials.
+              </div>
+            )}
 
             {/* Error message */}
             {state?.error && (
@@ -138,6 +149,21 @@ export default function LoginPage() {
               <p className="text-xs text-blue-400">Admin: admin@dairy.com / admin123</p>
               <p className="text-xs text-blue-400">Staff: staff@dairy.com / staff123</p>
             </div>
+
+            {/* Create account link */}
+            <div className="flex items-center gap-3 mt-6">
+              <div className="flex-1 h-px bg-white/10" />
+              <span className="text-xs text-blue-400/60 font-medium">NEW HERE?</span>
+              <div className="flex-1 h-px bg-white/10" />
+            </div>
+
+            <Link
+              href="/register"
+              id="register-link"
+              className="mt-4 w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 font-semibold text-sm hover:bg-emerald-500/20 hover:border-emerald-400/40 transition-all"
+            >
+              <UserPlus className="w-4 h-4" /> Get Started — Create Account
+            </Link>
           </motion.div>
 
           <p className="text-center text-xs text-blue-400/60 mt-6">
@@ -147,5 +173,13 @@ export default function LoginPage() {
         </div>
       </div>
     </>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginContent />
+    </Suspense>
   )
 }

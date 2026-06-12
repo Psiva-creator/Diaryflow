@@ -1,6 +1,6 @@
 import type { NextAuthConfig } from 'next-auth'
 
-const publicPaths = ['/login', '/', '/_next', '/favicon.ico']
+const publicPaths = ['/login', '/register', '/', '/_next', '/favicon.ico']
 
 export const authConfig = {
   trustHost: true,
