@@ -47,6 +47,12 @@ export async function register(
     role = 'staff'
   }
 
+  // Generate a friendly 6-character unique code for new admins
+  let newDairyCode: string | undefined
+  if (role === 'admin') {
+    newDairyCode = Math.random().toString(36).substring(2, 8).toUpperCase()
+  }
+
   // Hash password and create account
   const hashedPassword = await bcrypt.hash(password, 10)
 
@@ -57,6 +63,7 @@ export async function register(
       password: hashedPassword,
       role,
       adminId,
+      ...(newDairyCode && { dairyCode: newDairyCode }),
     },
   })
 
