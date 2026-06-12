@@ -37,7 +37,7 @@ export async function addCollection(data: AddCollectionInput) {
 
   // Find farmer by display ID scoped to this user
   const farmer = await prisma.farmer.findFirst({
-    where: { displayId: data.farmerId, userId: session.userId },
+    where: { displayId: data.farmerId, userId: session.effectiveUserId },
   })
   if (!farmer) return { error: 'Farmer not found' }
 
@@ -47,7 +47,7 @@ export async function addCollection(data: AddCollectionInput) {
 
   // Generate next display ID scoped to this user
   const lastCol = await prisma.collection.findFirst({
-    where: { userId: session.userId },
+    where: { userId: session.effectiveUserId },
     orderBy: { displayId: 'desc' },
   })
   const lastNum = lastCol
@@ -72,7 +72,7 @@ export async function addCollection(data: AddCollectionInput) {
         rate,
         amount,
         status: 'accepted',
-        userId: session.userId,
+        userId: session.effectiveUserId,
       },
     })
 
@@ -84,7 +84,7 @@ export async function addCollection(data: AddCollectionInput) {
 
     // Assign to tank with most available capacity (scoped to user)
     const tanks = await tx.tank.findMany({
-      where: { userId: session.userId, status: 'operational' },
+      where: { userId: session.effectiveUserId, status: 'operational' },
     })
     const candidates = tanks.filter(t => (t.current + data.qty) <= t.capacity)
     if (candidates.length > 0) {

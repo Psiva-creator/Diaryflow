@@ -19,7 +19,7 @@ export async function markAllNotifsAsRead() {
   if (!session) return { error: 'Unauthorized' }
 
   await prisma.notification.updateMany({
-    where: { userId: session.userId, read: false },
+    where: { userId: session.effectiveUserId, read: false },
     data: { read: true },
   })
 
@@ -37,7 +37,7 @@ export async function addNotification(data: { type: string; msg: string }) {
       msg: data.msg,
       time: 'Just now',
       read: false,
-      userId: session.userId,
+      userId: session.effectiveUserId,
     },
   })
 

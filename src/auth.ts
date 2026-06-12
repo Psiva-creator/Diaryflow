@@ -36,6 +36,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
   callbacks: {
     jwt({ token, user }) {
       if (user) {
+        token.id = user.id
         token.role = (user as any).role
         token.avatar = (user as any).avatar
         token.dairyCode = (user as any).dairyCode
@@ -45,6 +46,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
     },
     session({ session, token }) {
       if (token) {
+        session.user.id = token.id as string
         ;(session.user as any).role = token.role
         ;(session.user as any).avatar = token.avatar
         ;(session.user as any).dairyCode = token.dairyCode

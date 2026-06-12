@@ -16,7 +16,7 @@ export async function addCustomer(data: CustomerFormData) {
   }
 
   const lastCustomer = await prisma.customer.findFirst({
-    where: { userId: session.userId },
+    where: { userId: session.effectiveUserId },
     orderBy: { displayId: 'desc' },
   })
   const lastNum = lastCustomer
@@ -34,7 +34,7 @@ export async function addCustomer(data: CustomerFormData) {
       dailyQty: parsed.data.dailyQty,
       status: 'active',
       balance: 0,
-      userId: session.userId,
+      userId: session.effectiveUserId,
     },
   })
 
@@ -47,7 +47,7 @@ export async function updateCustomer(displayId: string, data: Partial<CustomerFo
   if (!session) return { error: 'Unauthorized' }
 
   const customer = await prisma.customer.findFirst({
-    where: { displayId, userId: session.userId },
+    where: { displayId, userId: session.effectiveUserId },
   })
   if (!customer) return { error: 'Customer not found' }
 
@@ -71,7 +71,7 @@ export async function deleteCustomer(displayId: string) {
   if (!session) return { error: 'Unauthorized' }
 
   const customer = await prisma.customer.findFirst({
-    where: { displayId, userId: session.userId },
+    where: { displayId, userId: session.effectiveUserId },
   })
   if (!customer) return { error: 'Customer not found' }
 

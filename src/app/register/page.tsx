@@ -111,7 +111,7 @@ export default function RegisterPage() {
                   />
                 </div>
                 <p className="text-xs text-blue-400/60 mt-1.5">
-                  If joining as staff, enter the Admin's Dairy Code.
+                  If joining as staff, enter the Admin&apos;s Dairy Code.
                 </p>
               </div>
 

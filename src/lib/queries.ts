@@ -14,8 +14,11 @@ const daysAgo = (n: number): string => {
 
 async function requireUserId(): Promise<string> {
   const session = await getSession()
-  if (!session) throw new Error('Unauthorized')
-  return session.adminId || session.userId
+  if (!session?.effectiveUserId) {
+    console.error('Data Isolation Error: No user ID found in session', session)
+    throw new Error('Data Isolation Error: No user ID found in session')
+  }
+  return session.effectiveUserId
 }
 
 // ── Farmers ──────────────────────────────────────────────────────────────────
@@ -168,11 +171,10 @@ export async function getTanks(): Promise<Tank[]> {
 
 // ── Notifications ────────────────────────────────────────────────────────────
 export async function getNotifications(): Promise<Notification[]> {
-  const session = await getSession()
-  if (!session) return []
+  const userId = await requireUserId()
 
   const notifs = await prisma.notification.findMany({
-    where: { userId: session.userId },
+    where: { userId },
     orderBy: { id: 'desc' },
   })
   return notifs.map((n, i) => ({

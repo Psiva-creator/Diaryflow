@@ -9,7 +9,7 @@ export async function updateTank(displayId: string, data: { current?: number; te
   if (!session) return { error: 'Unauthorized' }
 
   const tank = await prisma.tank.findFirst({
-    where: { displayId, userId: session.userId },
+    where: { displayId, userId: session.effectiveUserId },
   })
   if (!tank) return { error: 'Tank not found' }
 
