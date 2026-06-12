@@ -3,6 +3,7 @@ import type { NextAuthConfig } from 'next-auth'
 const publicPaths = ['/login', '/', '/_next', '/favicon.ico']
 
 export const authConfig = {
+  trustHost: true,
   pages: {
     signIn: '/login',
   },
