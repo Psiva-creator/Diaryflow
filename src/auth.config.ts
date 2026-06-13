@@ -27,13 +27,15 @@ export const authConfig = {
 
       return true
     },
-    jwt({ token, user }) {
+    jwt({ token, user, trigger, session }) {
       if (user) {
         // User is available during sign-in
         token.id = user.id
         token.role = (user as any).role
         token.name = user.name
         token.avatar = (user as any).avatar
+        token.dairyCode = (user as any).dairyCode
+        token.adminId = (user as any).adminId
       }
       return token
     },
@@ -43,6 +45,8 @@ export const authConfig = {
         ;(session.user as any).role = token.role as string
         session.user.name = token.name as string
         ;(session.user as any).avatar = token.avatar as string
+        ;(session.user as any).dairyCode = token.dairyCode as string
+        ;(session.user as any).adminId = token.adminId as string | null
       }
       return session
     },

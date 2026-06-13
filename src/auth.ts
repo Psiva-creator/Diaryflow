@@ -33,29 +33,6 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
       },
     }),
   ],
-  callbacks: {
-    ...authConfig.callbacks,
-    jwt({ token, user }) {
-      if (user) {
-        token.id = user.id
-        token.role = (user as any).role
-        token.name = user.name
-        token.avatar = (user as any).avatar
-        token.dairyCode = (user as any).dairyCode
-        token.adminId = (user as any).adminId
-      }
-      return token
-    },
-    session({ session, token }) {
-      if (token && session.user) {
-        session.user.id = token.id as string
-        session.user.name = token.name as string
-        ;(session.user as any).role = token.role
-        ;(session.user as any).avatar = token.avatar
-        ;(session.user as any).dairyCode = token.dairyCode
-        ;(session.user as any).adminId = token.adminId
-      }
-      return session
-    },
-  },
+  // Callbacks are fully defined in auth.config.ts and shared here
+  callbacks: authConfig.callbacks,
 })
