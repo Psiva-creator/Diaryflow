@@ -1,6 +1,7 @@
 import React from 'react'
 import { Milk, Calendar, User, MapPin } from 'lucide-react'
 import type { Collection, Farmer, Payment } from '@/types'
+import { calcRate } from '@/lib/rateCalculator'
 
 interface FarmerPassbookProps {
   farmer: Farmer
@@ -25,9 +26,12 @@ export default function FarmerPassbook({ farmer, collections, payments, startDat
     // If fat is not entered (0), use the farmer's average
     if (entry.fat === 0 || !entry.fat) {
       entry.fat = farmerAvgFat
-      const baseRate = 32 + (entry.fat - 3) * 5
-      entry.rate = baseRate
-      entry.amount = entry.qty * entry.rate
+    }
+    // Always use the canonical rate calculator for consistency
+    const computedRate = calcRate(entry.fat, entry.water, entry.snf)
+    if (computedRate > 0) {
+      entry.rate = computedRate
+      entry.amount = Math.round(entry.qty * computedRate * 100) / 100
     }
 
     if (!acc[entry.date]) acc[entry.date] = { date: entry.date, morning: null, evening: null }

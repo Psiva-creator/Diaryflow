@@ -81,8 +81,8 @@ export default function CollectionPage() {
 
   const recalc = (f: { qty: string, fat: string, water: string, snf: string }) => {
     const r = calcRate(+f.fat, +f.water, useSNF ? +f.snf : undefined)
-    const a = (+(f.qty) * r).toFixed(2)
-    setRate(r); setAmount(+a)
+    const a = Math.round(+(f.qty) * r * 100) / 100
+    setRate(r); setAmount(a)
   }
 
   const updateForm = (key: string, val: string) => {
@@ -277,7 +277,7 @@ export default function CollectionPage() {
             </div>
             <div>
               <label className="text-sm font-medium text-[var(--color-muted)] block mb-1.5">Fat % *</label>
-              <input id="collection-fat" type="number" step="0.1" min="0" max="10" value={form.fat} onChange={e=>updateForm('fat',e.target.value)} placeholder="4.2" className="input-field" />
+              <input id="collection-fat" type="number" step="0.1" min="3.0" max="10" value={form.fat} onChange={e=>updateForm('fat',e.target.value)} placeholder="4.2" className="input-field" />
             </div>
             {useSNF && (
               <div>
@@ -360,7 +360,7 @@ export default function CollectionPage() {
                       let amountPreview: string | number = 0
                       if (qty && fat && water && (!useSNF || snf)) {
                         const r = calcRate(+fat, +water, useSNF ? +snf : undefined)
-                        amountPreview = (+qty * r).toFixed(2)
+                        amountPreview = Math.round(+qty * r * 100) / 100
                       }
                       return (
                         <tr key={f.id} className="hover:bg-[var(--color-bg)]/50">

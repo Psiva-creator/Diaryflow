@@ -29,6 +29,12 @@ export const RATE_TABLE_2D: RateTable2D = {
  * Finally applies the water deduction.
  */
 export function calcRate(fat: number, water: number, snf?: number): number {
+  // Reject milk below minimum fat threshold (3.0%)
+  if (fat < 3.0) return 0
+
+  // Clamp water to valid range [0, 100] — prevents negative water exploit
+  const clampedWater = Math.max(0, Math.min(100, water))
+
   let fatKey: FatRange
   if (fat < 3.5) fatKey = '3.0-3.4'
   else if (fat < 4.0) fatKey = '3.5-3.9'
@@ -49,8 +55,8 @@ export function calcRate(fat: number, water: number, snf?: number): number {
     baseRate = BASE_FAT_RATES[fatKey] ?? 38
   }
   
-  // Deduct based on water percentage
-  const multiplier = Math.max(0, 1 - (water / 100))
+  // Deduct based on water percentage (clamped to prevent exploits)
+  const multiplier = Math.max(0, 1 - (clampedWater / 100))
   const finalRate = baseRate * multiplier
 
   // Return rounded to 2 decimal places

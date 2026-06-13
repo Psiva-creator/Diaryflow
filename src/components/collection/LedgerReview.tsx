@@ -68,7 +68,7 @@ export default function LedgerReview({ data, date, onSave, onCancel }: LedgerRev
       
       const farmer = farmers.find(f => f.id === e.matchedId)!
       const rate = calcRate(Number(e.fat), Number(e.water), useSNF ? Number(e.snf) : undefined)
-      const amount = Number((Number(e.qty) * rate).toFixed(2))
+      const amount = Math.round(Number(e.qty) * rate * 100) / 100
 
       validEntries.push({
         farmerId: farmer.id,
@@ -120,7 +120,7 @@ export default function LedgerReview({ data, date, onSave, onCancel }: LedgerRev
           <tbody className="bg-white dark:bg-slate-900 divide-y divide-[var(--color-border)]">
             {entries.map((e, i) => {
               const rate = (e.fat !== null && e.water !== null && (!useSNF || e.snf !== null)) ? calcRate(Number(e.fat), Number(e.water), useSNF ? Number(e.snf) : undefined) : 0
-              const amount = (e.qty && rate) ? (Number(e.qty) * rate).toFixed(2) : 0
+              const amount = (e.qty && rate) ? Math.round(Number(e.qty) * rate * 100) / 100 : 0
               
               return (
                 <tr key={e.tempId} className="hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-colors">

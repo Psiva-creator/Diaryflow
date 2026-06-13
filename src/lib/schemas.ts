@@ -31,9 +31,9 @@ export const collectionSchema = z.object({
   farmerId: z.string().min(1, 'Select a farmer'),
   shift: z.enum(['morning', 'evening']),
   qty: z.number().positive('Quantity must be greater than 0'),
-  fat: z.number().min(0).max(10, 'Fat% must be between 0 and 10'),
-  water: z.number().min(0).max(100, 'Water% must be between 0 and 100'),
-  snf: z.number().min(0).max(15, 'SNF% must be between 0 and 15').optional(),
+  fat: z.number().min(3.0, 'Fat% must be at least 3.0').max(10, 'Fat% must be between 3.0 and 10'),
+  water: z.number().min(0, 'Water% cannot be negative').max(100, 'Water% must be between 0 and 100'),
+  snf: z.number().min(0, 'SNF% cannot be negative').max(15, 'SNF% must be between 0 and 15').optional(),
   date: z.string().min(1, 'Date is required'),
 })
 
